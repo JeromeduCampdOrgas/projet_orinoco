@@ -37,6 +37,7 @@ module.exports.newProduct = async (req, res) => {
       imageUrl: req.file !== null ? "./uploads/products/" + fileName : "",
       price: req.body.price,
       description: req.body.description,
+      stock: req.body.stock,
     });
 
     try {
@@ -53,7 +54,7 @@ module.exports.getAllProducts = async (req, res) => {
   const products = await ProductModel.find();
   res.status(200).json(products);
 };
-//1 produit
+//get 1 produit
 module.exports.getOneProduct = (req, res) => {
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send("ID unknown : " + req.params.id);
@@ -64,15 +65,38 @@ module.exports.getOneProduct = (req, res) => {
     });
   }
 };
-
+//update 1 produit
+module.exports.updateOneProduct = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
+    return res.status(400).send("ID unknown : " + req.params.id);
+  } else {
+    await ProductModel.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: { price: req.body.price },
+        $set: { colors: req.body.colors },
+      },
+      { new: true, upsert: true, setDefaultsOnInsert: true },
+      (err, docs) => {
+        if (!err) {
+          res.send(docs);
+        } else {
+          res.status(400).json({ err: "erreur!!" });
+        }
+      }
+    );
+  }
+};
 //toutes les catégories
-module.exports.getAllCategories = async (req, res) => {
+module.exports.getAllCategories = (req, res) => {
   try {
     ProductModel.find().distinct("categorie", function (error, categories) {
       // categories is an array of all ObjectIds
+      console.log(res);
       res.status(200).json(categories);
     });
   } catch (err) {
+    console.log("coucou");
     res.status(200).json({ err: "oupssssssss!!!!!" });
   }
 };

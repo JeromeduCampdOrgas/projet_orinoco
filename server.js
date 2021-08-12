@@ -36,6 +36,7 @@ app.get("/jwtid", requireAuth, (req, res) => {
 //routes
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/product/categories", productRoutes);
 
 //server
 app.listen(process.env.PORT, () => {

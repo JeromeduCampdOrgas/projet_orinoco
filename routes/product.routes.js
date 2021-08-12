@@ -9,6 +9,10 @@ const fs = require("fs");
 router.get("/", productController.getAllProducts);
 ///Obtenir 1 produit
 router.get("/:id", productController.getOneProduct);
+///update 1 produit
+router.put("/:id", productController.updateOneProduct);
+///delete 1 produit
+router.delete("/:id", productController.deleteOneProduct);
 ///Obtenir toutes les catégories
 router.get("/categories", productController.getAllCategories);
 ///Créer un produit
