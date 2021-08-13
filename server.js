@@ -10,6 +10,8 @@ require("./config/db");
 const { checkUser, requireAuth } = require("./middleware/auth.middleware");
 const cors = require("cors");
 
+const { v4: uuidv4 } = require("uuid");
+
 const app = express();
 
 const corsOptions = {

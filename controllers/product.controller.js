@@ -6,7 +6,8 @@ const { promisify } = require("util"); //natif express ou node
 const pipeline = promisify(require("stream").pipeline);
 
 const ObjectID = require("mongoose").Types.ObjectId;
-
+const { v4: uuidv4 } = require("uuid");
+const uuid = uuidv4();
 //Création produit
 module.exports.newProduct = async (req, res) => {
   let fileName;
@@ -65,6 +66,39 @@ module.exports.getOneProduct = (req, res) => {
     });
   }
 };
+//getAllProductsCategorie
+module.exports.getAllProductsCategorie = async (req, res) => {
+  await ProductModel.find({ categorie: req.params.categorie }, (err, docs) => {
+    res.send(docs);
+  });
+};
+//delete one categorie
+module.exports.deleteOneProductsCategorie = async (req, res) => {
+  try {
+    await ProductModel.deleteMany({ categorie: req.params.categorie }).exec();
+    return res.status(200).json({ message: "Categorie successfully deleted" });
+  } catch (err) {
+    return res.status(500).json({ message: err });
+  }
+};
+//updateOneCategorie (name)
+module.exports.updateOneCategorie = async (req, res) => {
+  ProductModel.updateMany(
+    { categorie: req.params.categorie },
+    {
+      $set: { categorie: req.body.categorie },
+    },
+    { new: false, upsert: true, setDefaultsOnInsert: true },
+    (err, docs) => {
+      if (!err) {
+        res.send(docs);
+      } else {
+        res.status(400).json({ err });
+      }
+    }
+  );
+};
+
 //update 1 produit
 module.exports.updateOneProduct = async (req, res) => {
   if (!ObjectID.isValid(req.params.id)) {
@@ -111,4 +145,20 @@ module.exports.getAllCategories = (req, res) => {
     res.status(200).json({ err: "oupssssssss!!!!!" });
   }
 };
-//produits d'une catégorie
+//validation commande
+
+exports.orderValidated = (req, res, next) => {
+  if (
+    !req.body.firstName ||
+    !req.body.lastName ||
+    !req.body.address ||
+    !req.body.city ||
+    !req.body.email ||
+    !req.body.products
+  ) {
+    return res.status(400).send(new Error("Bad request!"));
+  } else {
+    const orderId = uuid;
+    return res.status(200).json({ "orderId:": orderId });
+  }
+};
