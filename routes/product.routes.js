@@ -4,6 +4,8 @@ const multer = require("multer");
 const upload = multer();
 const fs = require("fs");
 
+///Obtenir toutes les catégories
+router.get("/categories", productController.getAllCategories);
 //routes
 ///Obtenir tous les produits
 router.get("/", productController.getAllProducts);
@@ -13,8 +15,7 @@ router.get("/:id", productController.getOneProduct);
 router.put("/:id", productController.updateOneProduct);
 ///delete 1 produit
 router.delete("/:id", productController.deleteOneProduct);
-///Obtenir toutes les catégories
-router.get("/categories", productController.getAllCategories);
+
 ///Créer un produit
 router.post("/", upload.single("imageUrl"), productController.newProduct);
 

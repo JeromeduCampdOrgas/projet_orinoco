@@ -87,16 +87,28 @@ module.exports.updateOneProduct = async (req, res) => {
     );
   }
 };
+//delete 1produit
+module.exports.deleteOneProduct = async (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
+    return res.status(400).send("ID unknown : " + req.params.id);
+  } else {
+    try {
+      await ProductModel.remove({ _id: req.params.id }).exec();
+      res.status(200).json({ message: "Successfully deleted. " });
+    } catch (err) {
+      return res.status(500).json({ message: err });
+    }
+  }
+};
 //toutes les catégories
 module.exports.getAllCategories = (req, res) => {
   try {
     ProductModel.find().distinct("categorie", function (error, categories) {
       // categories is an array of all ObjectIds
-      console.log(res);
       res.status(200).json(categories);
     });
   } catch (err) {
-    console.log("coucou");
     res.status(200).json({ err: "oupssssssss!!!!!" });
   }
 };
+//produits d'une catégorie
