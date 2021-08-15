@@ -27,7 +27,7 @@ module.exports.newProduct = async (req, res) => {
     await pipeline(
       req.file.stream,
       fs.createWriteStream(
-        `${__dirname}/../admin/public/uploads/products/${fileName}`
+        `${__dirname}/../admin/src/assets/uploads/products/${fileName}`
       )
     );
 
