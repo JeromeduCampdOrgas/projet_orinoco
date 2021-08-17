@@ -8543,7 +8543,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^3.0.0":
+"vue@^2 || ^3.0.0-0", "vue@^3.2.3":
   "integrity" "sha512-z3/maZr+As43eL42pJTLWG+mnOTXpdPvbhFN7cDs8ZpJgMWtKlbjInLcyOD2XRyH424yulupYhyEFITfybcKnw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.2.3.tgz"
   "version" "3.2.3"
