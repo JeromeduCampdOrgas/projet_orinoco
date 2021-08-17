@@ -17,7 +17,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "SignUpForm",
+};
 </script>
 
 <style lang="scss">

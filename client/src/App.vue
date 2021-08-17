@@ -1,19 +1,19 @@
 <template>
   <div>
-    <img src="./assets/logo-resize.jpg" alt="logo orinoco" />
-    <SignUpForm msg="Welcome to Your Vue.js App" />
+    <img src="./assets/logo-resize.jpg" alt="logo orinoco" id="logo" />
+    <SignInForm />
   </div>
 </template>
 
 <script>
-import SignUpForm from "./components/SignUpForm.vue";
+import SignInForm from "./components/Log/SignInForm.vue";
 
 export default {
   name: "App",
   components: {
-    SignUpForm,
+    SignInForm,
   },
 };
 </script>
 
-<style></style>
+<style lang="scss"></style>
