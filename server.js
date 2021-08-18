@@ -22,6 +22,7 @@ const corsOptions = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
 };
+
 app.use(cors(corsOptions));
 app.use(helmet());
 

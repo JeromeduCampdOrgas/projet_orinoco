@@ -1,6 +1,8 @@
 <template>
   <div>
-    <img src="./assets/logo-resize.jpg" alt="logo orinoco" id="logo" />
+    <div id="banniere">
+      <img src="./assets/logo-resize.jpg" alt="logo orinoco" id="logo" />
+    </div>
     <SignInForm />
   </div>
 </template>
@@ -16,4 +18,9 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+#banniere {
+  width: 100%;
+  text-align: center;
+}
+</style>
