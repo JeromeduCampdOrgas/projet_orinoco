@@ -27,11 +27,14 @@ module.exports.signIn = async (req, res) => {
 
   try {
     const user = await UserModel.login(email, password);
-    const token = createToken(user._id, user.isAdmin);
+    const token = createToken(user._id, user.isAdmin, user.pseudo);
     //res.cookie("token", token, { httpOnly: true, maxAge });
-    res
-      .status(200)
-      .json({ token: token, user: user._id, isAdmin: user.isAdmin });
+    res.status(200).json({
+      token: token,
+      user: user._id,
+      pseudo: user.pseudo,
+      isAdmin: user.isAdmin,
+    });
   } catch (err) {
     const errors = signInErrors(err);
     res.status(200).json({ errors });

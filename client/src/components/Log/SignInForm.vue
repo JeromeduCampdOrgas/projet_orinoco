@@ -42,7 +42,12 @@
   </div>
 </template>
 <script>
+import store from "../../store/index";
 import configAxios from "../../axios/configAxios";
+
+//import utils from "../Utils/axios";
+
+import jwtDecode from "jwt-decode";
 export default {
   name: "Connexion",
   data() {
@@ -75,12 +80,26 @@ export default {
             password: password,
           })
           .then((result) => {
-            //console.log(result);
             localStorage.setItem("token", result.data.token);
+            const decoded = jwtDecode(result.data.token);
+            store.dispatch("getUserInfos", decoded);
+            store.dispatch("getUserName", result.data.pseudo);
+
+            store.dispatch("getCategories");
+
+            location.replace("/AllProducts");
           })
           .catch(() => (this.idUncorrect = true));
       }
     },
   },
+  /*computed: {
+    setUserInfo() {
+      return this.$store.state.userLoggedIn;
+    },
+    setUserName() {
+      return this.$store.state.userName;
+    },
+  },*/
 };
 </script>
