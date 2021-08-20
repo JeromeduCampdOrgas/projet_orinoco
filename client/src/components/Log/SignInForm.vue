@@ -62,6 +62,19 @@ export default {
   },
   methods: {
     connexion() {
+      //Obtenir toutes les catégories
+      configAxios
+        .get(`product/categories`)
+        .then((res) => {
+          store.dispatch("getCategories", res.data);
+        })
+        .catch((err) => err);
+      //Obtenir tous les produits
+      configAxios
+        .get(`product`)
+        .then((res) => store.dispatch("getProducts", res.data))
+        .catch((err) => err);
+
       const email = this.dataConnexion.email;
       const password = this.dataConnexion.password;
       const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
@@ -84,22 +97,26 @@ export default {
             const decoded = jwtDecode(result.data.token);
             store.dispatch("getUserInfos", decoded);
             store.dispatch("getUserName", result.data.pseudo);
+            /********************** */
 
-            store.dispatch("getCategories");
-
+            /************************************************* */
             location.replace("/AllProducts");
           })
+
           .catch(() => (this.idUncorrect = true));
       }
     },
   },
-  /*computed: {
-    setUserInfo() {
-      return this.$store.state.userLoggedIn;
+  computed: {
+    userLoggedIn() {
+      return store.state.userLoggedIn;
     },
     setUserName() {
       return this.$store.state.userName;
     },
-  },*/
+    setCategories() {
+      return this.$store.state.categories;
+    },
+  },
 };
 </script>

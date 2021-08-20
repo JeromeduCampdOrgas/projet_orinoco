@@ -1,12 +1,13 @@
 import Vuex from "vuex";
 import persistedState from "vuex-persistedstate";
-import configAxios from "../axios/configAxios";
+//import configAxios from "../axios/configAxios";
 
 /*****State************************************************/
 const state = {
   userLoggedIn: {},
   userName: "",
   categories: [],
+  products: [],
 };
 
 /*****Getters**********************************************/
@@ -19,6 +20,9 @@ const getters = {
   },
   getCategories: () => {
     return state.categories;
+  },
+  getProducts: () => {
+    return state.products;
   },
 };
 
@@ -33,6 +37,9 @@ const mutations = {
   SET_CATEGORIES: (state, categorie) => {
     state.categories = categorie;
   },
+  SET_PRODUCTS: (state, product) => {
+    state.products = product;
+  },
 };
 
 /****Actions************************************************/
@@ -43,10 +50,11 @@ const actions = {
   getUserName: ({ commit }, name) => {
     commit("SET_USERNAME", name);
   },
-  getCategories: (context) => {
-    configAxios.get(`product/categories`).then((response) => {
-      context.commit("SET_CATEGORIES", response.data);
-    });
+  getCategories: ({ commit }, categories) => {
+    commit("SET_CATEGORIES", categories);
+  },
+  getProducts: ({ commit }, products) => {
+    commit("SET_PRODUCTS", products);
   },
 };
 

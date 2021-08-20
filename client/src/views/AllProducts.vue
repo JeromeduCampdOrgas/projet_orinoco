@@ -1,8 +1,10 @@
 <template>
   <div>
     <div>produits</div>
-    {{ this.state.userName }} : {{ userLoggedIn.isAdmin }}
-    {{ categories }}
+    {{ userLoggedIn.isAdmin }}
+    {{ setUserName }}
+    {{ setCategories }}
+    {{ setProducts[0].name }}
   </div>
 </template>
 
@@ -20,6 +22,12 @@ export default {
     },
     setUserName() {
       return this.$store.state.userName;
+    },
+    setCategories() {
+      return this.$store.state.categories;
+    },
+    setProducts() {
+      return this.$store.state.products;
     },
   },
 };
