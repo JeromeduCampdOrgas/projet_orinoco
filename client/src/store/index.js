@@ -46,7 +46,7 @@ const mutations = {
     state.products = product;
   },
   SET_FIRSTPAGE: (state, accueil) => {
-    state.firstPage = accueil;
+    state.accueil = accueil;
   },
 };
 

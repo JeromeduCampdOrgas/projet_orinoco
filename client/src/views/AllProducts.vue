@@ -5,6 +5,12 @@
     {{ setUserName }}
     {{ setCategories }}
     {{ setProducts[0].name }}
+    <br />
+    {{ firstPage[0] }}
+    <br />
+    {{ firstPage[1] }}
+    <br />
+    {{ firstPage[2] }}
 
     <input type="button" value="test" @click="test" />
   </div>
@@ -26,6 +32,7 @@ export default {
           (element) => element.categorie == categorie
         );
         this.firstPage.push(found);
+        store.dispatch("getFirstPage", this.firstPage);
       }
       console.log(this.firstPage);
     },
@@ -49,6 +56,10 @@ export default {
     },
     setProducts() {
       return this.$store.state.products;
+    },
+
+    setFirstPage() {
+      return this.$store.state.accueil;
     },
   },
 };
