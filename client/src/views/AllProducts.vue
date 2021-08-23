@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div class="container">
     <div>produits</div>
     {{ userLoggedIn.isAdmin }}
     {{ setUserName }}
     {{ setCategories }}
     {{ setProducts[0].name }}
+
+    <input type="button" value="test" @click="test" />
   </div>
 </template>
 
@@ -13,9 +15,27 @@ import store from "../store/index";
 
 export default {
   data() {
-    return {};
+    return {
+      firstPage: [],
+    };
   },
-  methods: {},
+  methods: {
+    test() {
+      for (let categorie of this.setCategories) {
+        const found = this.setProducts.find(
+          (element) => element.categorie == categorie
+        );
+        this.firstPage.push(found);
+      }
+      console.log(this.firstPage);
+    },
+  },
+  beforeMount() {
+    this.test();
+  },
+  setProducts() {
+    return this.$store.state.products;
+  },
   computed: {
     userLoggedIn() {
       return store.state.userLoggedIn;
@@ -23,6 +43,7 @@ export default {
     setUserName() {
       return this.$store.state.userName;
     },
+
     setCategories() {
       return this.$store.state.categories;
     },
@@ -33,4 +54,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.container,
+.form {
+  text-align: center;
+}
+</style>

@@ -62,18 +62,38 @@ export default {
   },
   methods: {
     connexion() {
+      //let produits = [];
+      //let famille = "";
+      //let firstPage = "";
       //Obtenir toutes les catégories
       configAxios
         .get(`product/categories`)
         .then((res) => {
+          //famille = res.data;
           store.dispatch("getCategories", res.data);
+          //console.log("famille: " + famille);
         })
         .catch((err) => err);
       //Obtenir tous les produits
       configAxios
         .get(`product`)
-        .then((res) => store.dispatch("getProducts", res.data))
+        .then((res) => {
+          store.dispatch("getProducts", res.data);
+          //produits = res.data;
+          //console.log(res.data);
+          //console.log("produits: " + produits);
+        })
         .catch((err) => err);
+
+      /*for (let categorie of famille) {
+        console.log(categorie);
+        const found = produits.find(
+          (element) => element.categorie == categorie
+        );
+        firstPage.push(found);
+      }
+      console.log("firstPage: " + firstPage);*/
+      //
 
       const email = this.dataConnexion.email;
       const password = this.dataConnexion.password;

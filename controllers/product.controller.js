@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const productModel = require("../models/product.model");
 const ProductModel = require("../models/product.model");
 //const { uploadErrors } = require("../utils/errors.utils");
@@ -7,6 +9,7 @@ const pipeline = promisify(require("stream").pipeline);
 
 const ObjectID = require("mongoose").Types.ObjectId;
 const { v4: uuidv4 } = require("uuid");
+const { json } = require("body-parser");
 const uuid = uuidv4();
 //Création produit
 module.exports.newProduct = async (req, res) => {
@@ -49,10 +52,12 @@ module.exports.newProduct = async (req, res) => {
     }
   }
 };
-
+//let produits = [];
 //tous les produits
 module.exports.getAllProducts = async (req, res) => {
   const products = await ProductModel.find();
+  /*produits.push(products);
+  console.log(produits);*/
   res.status(200).json(products);
 };
 //get 1 produit
@@ -66,7 +71,8 @@ module.exports.getOneProduct = (req, res) => {
     });
   }
 };
-//getAllProductsCategorie
+
+//getAllProducts of One Categorie
 module.exports.getAllProductsCategorie = async (req, res) => {
   await ProductModel.find({ categorie: req.params.categorie }, (err, docs) => {
     res.send(docs);
@@ -139,12 +145,24 @@ module.exports.getAllCategories = (req, res) => {
   try {
     ProductModel.find().distinct("categorie", function (error, categories) {
       // categories is an array of all ObjectIds
+
       res.status(200).json(categories);
     });
   } catch (err) {
     res.status(200).json({ err: "oupssssssss!!!!!" });
   }
 };
+//one product per categorie
+/*module.exports.getOneProductPerCategorie = async (req, res, next) => {
+  try {
+    let produits = "";
+    const products = await ProductModel.find();
+    console.log("coucou1");
+    produits = products;
+    res.status(200).json(_.uniq(produits));
+  } catch {}
+};*/
+
 //validation commande
 
 exports.orderValidated = (req, res, next) => {

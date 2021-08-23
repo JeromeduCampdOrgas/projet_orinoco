@@ -8,6 +8,7 @@ const state = {
   userName: "",
   categories: [],
   products: [],
+  accueil: [],
 };
 
 /*****Getters**********************************************/
@@ -23,6 +24,10 @@ const getters = {
   },
   getProducts: () => {
     return state.products;
+  },
+
+  getFirstPage: () => {
+    return state.accueil;
   },
 };
 
@@ -40,6 +45,9 @@ const mutations = {
   SET_PRODUCTS: (state, product) => {
     state.products = product;
   },
+  SET_FIRSTPAGE: (state, accueil) => {
+    state.firstPage = accueil;
+  },
 };
 
 /****Actions************************************************/
@@ -55,6 +63,9 @@ const actions = {
   },
   getProducts: ({ commit }, products) => {
     commit("SET_PRODUCTS", products);
+  },
+  getFirstPage: ({ commit }, firstPage) => {
+    commit("SET_FIRSTPAGE", firstPage);
   },
 };
 
