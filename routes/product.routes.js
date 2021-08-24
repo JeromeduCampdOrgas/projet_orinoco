@@ -12,8 +12,6 @@ router.get("/:categorie", productController.getAllProductsCategorie);
 router.delete("/:categorie", productController.deleteOneProductsCategorie);
 //modifier le nom d'une catégorie
 router.put("/:categorie", productController.updateOneCategorie);
-//1 produit par categorie de produits
-//router.get("/categories/page", productController.getOneProductPerCategorie);
 
 //routes
 ///Obtenir tous les produits

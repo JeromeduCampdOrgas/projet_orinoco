@@ -9,6 +9,7 @@ const state = {
   categories: [],
   products: [],
   accueil: [],
+  pageProduits: [],
 };
 
 /*****Getters**********************************************/
@@ -29,6 +30,9 @@ const getters = {
   getFirstPage: () => {
     return state.accueil;
   },
+  getPageProduits: () => {
+    return state.pageProduits;
+  },
 };
 
 /****Mutations**********************************************/
@@ -48,6 +52,9 @@ const mutations = {
   SET_FIRSTPAGE: (state, accueil) => {
     state.accueil = accueil;
   },
+  SET_PAGE_PRODUITS: (state, produits) => {
+    state.pageProduits = produits;
+  },
 };
 
 /****Actions************************************************/
@@ -66,6 +73,9 @@ const actions = {
   },
   getFirstPage: ({ commit }, firstPage) => {
     commit("SET_FIRSTPAGE", firstPage);
+  },
+  getPageProduits: ({ commit }, produits) => {
+    commit("SET_PAGE_PRODUITS", produits);
   },
 };
 

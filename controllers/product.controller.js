@@ -26,11 +26,12 @@ module.exports.newProduct = async (req, res) => {
       //const errors = uploadErrors(err);
       return res.status(201).json({ err: "y'a un probleme ici" });
     }
+
     fileName = req.body.name + ".jpg";
     await pipeline(
       req.file.stream,
       fs.createWriteStream(
-        `${__dirname}/../client/src/assets/uploads/products/${fileName}`
+        `${__dirname}/../client/public/uploads/products/${fileName}`
       )
     );
 

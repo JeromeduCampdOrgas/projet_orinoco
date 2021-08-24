@@ -9,18 +9,24 @@
     <div v-if="token">
       <AllProducts />
     </div>
+    <div>
+      <PageProduits />
+    </div>
   </div>
 </template>
 
 <script>
 import SignInForm from "./components/Log/SignInForm.vue";
+import PageProduits from "./components/Produits/PageProduits.vue";
 import AllProducts from "./views/AllProducts.vue";
+//import store from "../store/index";
 
 export default {
   name: "App",
   components: {
     SignInForm,
     AllProducts,
+    PageProduits,
   },
   data() {
     return {
