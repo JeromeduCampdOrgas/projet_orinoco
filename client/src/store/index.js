@@ -10,6 +10,7 @@ const state = {
   products: [],
   accueil: [],
   pageProduits: [],
+  selectedCategorie: "",
 };
 
 /*****Getters**********************************************/
@@ -33,6 +34,9 @@ const getters = {
   getPageProduits: () => {
     return state.pageProduits;
   },
+  getSelectedCategorie: () => {
+    return state.selectedCategorie;
+  },
 };
 
 /****Mutations**********************************************/
@@ -55,27 +59,39 @@ const mutations = {
   SET_PAGE_PRODUITS: (state, produits) => {
     state.pageProduits = produits;
   },
+  SET_SELECTED_CATEGORIE: (state, selected) => {
+    state.selectedCategorie = selected;
+  },
 };
 
 /****Actions************************************************/
 const actions = {
+  //id,idAdmin
   getUserInfos: ({ commit }, user) => {
     commit("SET_USER_INFOS", user);
   },
+  //username
   getUserName: ({ commit }, name) => {
     commit("SET_USERNAME", name);
   },
+  //getAllCategories
   getCategories: ({ commit }, categories) => {
     commit("SET_CATEGORIES", categories);
   },
+  //getAllproducts
   getProducts: ({ commit }, products) => {
     commit("SET_PRODUCTS", products);
   },
+  //getOneProductPerPage
   getFirstPage: ({ commit }, firstPage) => {
     commit("SET_FIRSTPAGE", firstPage);
   },
+  //getProductsOfCategorieSelected
   getPageProduits: ({ commit }, produits) => {
     commit("SET_PAGE_PRODUITS", produits);
+  },
+  getSelectedCategorie: ({ commit }, selected) => {
+    commit("SET_SELECTED_CATEGORIE", selected);
   },
 };
 

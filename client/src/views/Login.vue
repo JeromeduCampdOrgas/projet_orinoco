@@ -42,8 +42,8 @@
   </div>
 </template>
 <script>
-import store from "../../store/index";
-import configAxios from "../../axios/configAxios";
+import store from "../store/index";
+import configAxios from "../axios/configAxios";
 
 //import utils from "../Utils/axios";
 
@@ -73,6 +73,7 @@ export default {
       configAxios
         .get(`product`)
         .then((res) => {
+          console.log(res.data);
           store.dispatch("getProducts", res.data);
         })
         .catch((err) => err);
@@ -105,7 +106,8 @@ export default {
 
             /************************************************* */
             //this.$router.push({ path: "/AllProducts" });
-            location.replace("/AllProducts");
+            //location.replace("/AllProducts");
+            this.$router.push("/AllProducts");
           })
 
           .catch(() => (this.idUncorrect = true));
@@ -113,14 +115,20 @@ export default {
     },
   },
   computed: {
-    userLoggedIn() {
-      return store.state.userLoggedIn;
-    },
-    setUserName() {
-      return this.$store.state.userName;
-    },
-    setCategories() {
-      return this.$store.state.categories;
+    computed: {
+      username() {
+        // We will see what `params` is shortly
+        return this.$route.params.username;
+      },
+      userLoggedIn() {
+        return store.state.userLoggedIn;
+      },
+      setUserName() {
+        return this.$store.state.userName;
+      },
+      setCategories() {
+        return this.$store.state.categories;
+      },
     },
   },
 };

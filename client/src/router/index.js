@@ -1,22 +1,43 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Login from "../views/Login.vue";
-
-import AllProducts from "../views/AllProducts.vue";
-
 const routes = [
   {
-    path: "/Login",
-    name: "login",
-    component: Login,
+    path: "/",
+    redirect: "/login",
   },
   {
-    path: "/AllProducts",
-    name: "AllProducts",
-    component: AllProducts,
+    path: "/about",
+    name: "About",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
     beforeEnter: (to, from, next) => {
-      localStorage.getItem("token") ? next() : next({ name: "Home" });
+      localStorage.getItem("token") ? next({ name: "AllProducts" }) : next();
     },
+  },
+  {
+    path: "/allProducts",
+    name: "AllProducts",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/AllProducts.vue"),
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem("token") ? next() : next({ name: "Login" });
+    },
+  },
+  {
+    path: "/:categorie",
+    component: () =>
+      import(
+        /* webpackChunkName: "login" */ "../components/Produits/PageProduits.vue"
+      ),
   },
 ];
 

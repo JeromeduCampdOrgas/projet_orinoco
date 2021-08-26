@@ -1,57 +1,36 @@
 <template>
   <div>
-    <div id="banniere">
-      <img src="./assets/logo-resize.jpg" alt="logo orinoco" id="logo" />
-    </div>
-    <div v-if="!token">
-      <SignInForm />
-    </div>
-    <div v-if="token">
-      <AllProducts />
-    </div>
-    <div>
-      <PageProduits />
-    </div>
+    <Header />
+    <div id="nav"></div>
+    <router-view />
   </div>
 </template>
-
 <script>
-import SignInForm from "./components/Log/SignInForm.vue";
-import PageProduits from "./components/Produits/PageProduits.vue";
-import AllProducts from "./views/AllProducts.vue";
-//import store from "../store/index";
-
+import Header from "./components/Header.vue";
 export default {
-  name: "App",
-  components: {
-    SignInForm,
-    AllProducts,
-    PageProduits,
-  },
-  data() {
-    return {
-      renderComponent: true,
-      token: localStorage.getItem("token"),
-      chemin: window.location.pathname,
-    };
-  },
-  methods: {
-    forceRerender() {
-      // Remove my-component from the DOM
-      this.renderComponent = false;
-
-      this.$nextTick(() => {
-        // Add the component back in
-        this.renderComponent = true;
-      });
-    },
-  },
+  components: { Header },
 };
 </script>
 
 <style lang="scss">
-#banniere {
-  width: 100%;
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  color: #2c3e50;
+}
+
+#nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>
