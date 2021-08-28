@@ -38,6 +38,17 @@ const routes = [
       import(
         /* webpackChunkName: "login" */ "../components/Produits/PageProduits.vue"
       ),
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem("token") ? next() : next({ name: "Login" });
+    },
+  },
+  {
+    path: "/modification",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/ModifProduit.vue"),
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem("token") ? next() : next({ name: "Login" });
+    },
   },
 ];
 

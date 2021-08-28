@@ -11,10 +11,15 @@ const state = {
   accueil: [],
   pageProduits: [],
   selectedCategorie: "",
+  userLogged: false,
+  modifProduit: "",
 };
 
 /*****Getters**********************************************/
 const getters = {
+  getUserLogged: () => {
+    return state.userLogged;
+  },
   getUserLoggedIn: () => {
     return state.userLoggedIn;
   },
@@ -37,10 +42,16 @@ const getters = {
   getSelectedCategorie: () => {
     return state.selectedCategorie;
   },
+  getModifProduit: () => {
+    return state.modifProduit;
+  },
 };
 
 /****Mutations**********************************************/
 const mutations = {
+  SET_USER_LOGGED: (state, logged) => {
+    state.userLogged = logged;
+  },
   SET_USER_INFOS: (state, user) => {
     state.userLoggedIn = user;
   },
@@ -62,10 +73,17 @@ const mutations = {
   SET_SELECTED_CATEGORIE: (state, selected) => {
     state.selectedCategorie = selected;
   },
+  SET_MODIF_PRODUIT: (state, produit) => {
+    state.modifProduit = produit;
+  },
 };
 
 /****Actions************************************************/
 const actions = {
+  //LoggedIn?
+  getUserLogged: ({ commit }, logged) => {
+    commit("SET_USER_LOGGED", logged);
+  },
   //id,idAdmin
   getUserInfos: ({ commit }, user) => {
     commit("SET_USER_INFOS", user);
@@ -92,6 +110,9 @@ const actions = {
   },
   getSelectedCategorie: ({ commit }, selected) => {
     commit("SET_SELECTED_CATEGORIE", selected);
+  },
+  getModifProduit: ({ commit }, produit) => {
+    commit("SET_MODIF_PRODUIT", produit);
   },
 };
 

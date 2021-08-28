@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const userRoutes = require("./routes/user.routes");
 const productRoutes = require("./routes/product.routes");
+const categorieRoutes = require("./routes/categorie.routes");
 
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
@@ -39,7 +40,7 @@ app.get("/jwtid", requireAuth, (req, res) => {
 //routes
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
-app.use("/api/product/categories", productRoutes);
+app.use("/api/categories", categorieRoutes);
 
 //server
 app.listen(process.env.PORT, () => {

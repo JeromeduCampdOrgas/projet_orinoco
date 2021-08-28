@@ -1,14 +1,51 @@
 <template>
   <div>
     <Header />
-    <div id="nav"></div>
+    <div id="nav">
+      <button v-if="this.setUserLogged" @click="deconnect">Déconnexion</button>
+    </div>
     <router-view />
   </div>
 </template>
 <script>
 import Header from "./components/Header.vue";
+import store from "./store/index";
 export default {
+  data() {
+    return {};
+  },
   components: { Header },
+  methods: {
+    deconnect: function() {
+      localStorage.clear();
+      window.location.replace("/");
+    },
+  },
+  computed: {
+    setUserLogged() {
+      return store.state.userLogged;
+    },
+    userLoggedIn() {
+      return store.state.userLoggedIn;
+    },
+    setUserName() {
+      return this.$store.state.userName;
+    },
+
+    setCategories() {
+      return this.$store.state.categories;
+    },
+    setProducts() {
+      return this.$store.state.products;
+    },
+
+    setFirstPage() {
+      return this.$store.state.accueil;
+    },
+    setNbProducts() {
+      return store.state.pageProduits.length;
+    },
+  },
 };
 </script>
 

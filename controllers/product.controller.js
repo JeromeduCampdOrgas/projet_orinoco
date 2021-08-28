@@ -1,6 +1,6 @@
-const _ = require("lodash");
+//const _ = require("lodash");
 
-const productModel = require("../models/product.model");
+//const productModel = require("../models/product.model");
 const ProductModel = require("../models/product.model");
 //const { uploadErrors } = require("../utils/errors.utils");
 const fs = require("fs"); //natif express ou node
@@ -11,6 +11,7 @@ const ObjectID = require("mongoose").Types.ObjectId;
 const { v4: uuidv4 } = require("uuid");
 const { json } = require("body-parser");
 const uuid = uuidv4();
+
 //Création produit
 module.exports.newProduct = async (req, res) => {
   let fileName;
@@ -35,7 +36,7 @@ module.exports.newProduct = async (req, res) => {
       )
     );
 
-    const newProduct = new productModel({
+    const newProduct = new ProductModel({
       categorie: req.body.categorie,
       name: req.body.name,
       colors: req.body.colors,
@@ -53,57 +54,21 @@ module.exports.newProduct = async (req, res) => {
     }
   }
 };
-//let produits = [];
+
+//get 1 produit
+module.exports.getProduct = (req, res) => {
+  console.log("coucou");
+  console.log(req.params.id);
+  ProductModel.findOne({ _id: req.params.id }, (err, docs) => {
+    res.send(docs);
+  });
+};
 //tous les produits
 module.exports.getAllProducts = async (req, res) => {
   const products = await ProductModel.find();
   /*produits.push(products);
   console.log(produits);*/
   res.status(200).json(products);
-};
-//get 1 produit
-module.exports.getOneProduct = (req, res) => {
-  if (!ObjectID.isValid(req.params.id)) {
-    return res.status(400).send("ID unknown : " + req.params.id);
-  } else {
-    ProductModel.findById(req.params.id, (err, docs) => {
-      if (!err) res.send(docs);
-      else console.log("erreur");
-    });
-  }
-};
-
-//getAllProducts of One Categorie
-module.exports.getAllProductsCategorie = async (req, res) => {
-  await ProductModel.find({ categorie: req.params.categorie }, (err, docs) => {
-    res.send(docs);
-  });
-};
-//delete one categorie
-module.exports.deleteOneProductsCategorie = async (req, res) => {
-  try {
-    await ProductModel.deleteMany({ categorie: req.params.categorie }).exec();
-    return res.status(200).json({ message: "Categorie successfully deleted" });
-  } catch (err) {
-    return res.status(500).json({ message: err });
-  }
-};
-//updateOneCategorie (name)
-module.exports.updateOneCategorie = async (req, res) => {
-  ProductModel.updateMany(
-    { categorie: req.params.categorie },
-    {
-      $set: { categorie: req.body.categorie },
-    },
-    { new: false, upsert: true, setDefaultsOnInsert: true },
-    (err, docs) => {
-      if (!err) {
-        res.send(docs);
-      } else {
-        res.status(400).json({ err });
-      }
-    }
-  );
 };
 
 //update 1 produit
@@ -141,18 +106,7 @@ module.exports.deleteOneProduct = async (req, res) => {
     }
   }
 };
-//toutes les catégories
-module.exports.getAllCategories = (req, res) => {
-  try {
-    ProductModel.find().distinct("categorie", function (error, categories) {
-      // categories is an array of all ObjectIds
 
-      res.status(200).json(categories);
-    });
-  } catch (err) {
-    res.status(200).json({ err: "oupssssssss!!!!!" });
-  }
-};
 //one product per categorie
 /*module.exports.getOneProductPerCategorie = async (req, res, next) => {
   try {

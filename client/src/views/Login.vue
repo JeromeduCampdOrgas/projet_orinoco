@@ -100,13 +100,12 @@ export default {
           .then((result) => {
             localStorage.setItem("token", result.data.token);
             const decoded = jwtDecode(result.data.token);
+            let logged = false;
+            logged = !logged;
+            store.dispatch("getUserLogged", logged);
             store.dispatch("getUserInfos", decoded);
             store.dispatch("getUserName", result.data.pseudo);
-            /********************** */
 
-            /************************************************* */
-            //this.$router.push({ path: "/AllProducts" });
-            //location.replace("/AllProducts");
             this.$router.push("/AllProducts");
           })
 
@@ -114,21 +113,20 @@ export default {
       }
     },
   },
+
   computed: {
-    computed: {
-      username() {
-        // We will see what `params` is shortly
-        return this.$route.params.username;
-      },
-      userLoggedIn() {
-        return store.state.userLoggedIn;
-      },
-      setUserName() {
-        return this.$store.state.userName;
-      },
-      setCategories() {
-        return this.$store.state.categories;
-      },
+    username() {
+      // We will see what `params` is shortly
+      return this.$route.params.username;
+    },
+    userLoggedIn() {
+      return store.state.userLoggedIn;
+    },
+    setUserName() {
+      return this.$store.state.userName;
+    },
+    setCategories() {
+      return this.$store.state.categories;
     },
   },
 };

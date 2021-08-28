@@ -2,7 +2,7 @@
   <div class="container" v-show="isVisible">
     <div>
       <h1>produits</h1>
-      <p>{{ this.isVisible }}</p>
+      <p>admin? {{ userLoggedIn.isAdmin }}</p>
       <p>nb Produits: {{ this.setNbProducts }}</p>
     </div>
     <div
@@ -32,16 +32,14 @@ export default {
   methods: {
     pageProduits(e) {
       this.isVisible = !this.isVisible;
-      let categorie = "/" + e.target.alt;
+      let categorie = e.target.alt;
       configAxios
         .get(`product/${categorie}`)
         .then((res) => {
           store.dispatch("getPageProduits", res.data);
           store.dispatch("getSelectedCategorie", categorie);
-          console.log(categorie);
-          //location.push(`/${categorie}`);
-          //this.$router.push("/AllProducts");
           this.$router.push(categorie);
+          return store.state.selectedCategorie;
         })
         .catch((err) => err);
     },
@@ -52,7 +50,6 @@ export default {
           (element) => element.categorie == categorie
         );
         this.firstPage.push(found);
-
         this.imageUrl.push(found.imageUrl);
         store.dispatch("getFirstPage", this.firstPage);
       }
@@ -62,7 +59,7 @@ export default {
     this.productsFirstPage();
   },
   setProducts() {
-    return this.$store.state.products;
+    return store.state.products;
   },
   computed: {
     userLoggedIn() {
