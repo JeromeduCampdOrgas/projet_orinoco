@@ -64,7 +64,7 @@ export default {
     connexion() {
       //Obtenir toutes les catégories
       configAxios
-        .get(`product/categories`)
+        .get(`categories`)
         .then((res) => {
           store.dispatch("getCategories", res.data);
         })

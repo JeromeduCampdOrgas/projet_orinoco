@@ -34,7 +34,7 @@ export default {
       this.isVisible = !this.isVisible;
       let categorie = e.target.alt;
       configAxios
-        .get(`product/${categorie}`)
+        .get(`categories/${categorie}`)
         .then((res) => {
           store.dispatch("getPageProduits", res.data);
           store.dispatch("getSelectedCategorie", categorie);
