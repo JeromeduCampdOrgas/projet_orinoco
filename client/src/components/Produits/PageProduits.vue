@@ -40,7 +40,7 @@ export default {
     };
   },
   methods: {
-    edit: function(e) {
+    edit: async function(e) {
       let selectedProductId = e.path[2].id;
       /*for (let i = 0; i < this.setProducts.length; i++) {
         if (this.setProducts[i]._id === selectedProductId) {
@@ -50,10 +50,10 @@ export default {
       configAxios.get(`product/${selectedProductId}`).then((res) => {
         //console.log(res.data);
         this.selectedProduct = res.data;
-        console.log(this.selectedProduct);
-        //store.dispatch("getModifProduit", this.selectedProduct);
+        //console.log(this.selectedProduct);
+        store.dispatch("getModifProduit", this.selectedProduct);
 
-        //this.$router.push("/modification");
+        this.$router.push("/modification");
       });
     },
   },

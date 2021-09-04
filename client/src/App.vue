@@ -45,6 +45,9 @@ export default {
     setNbProducts() {
       return store.state.pageProduits.length;
     },
+    setModifs() {
+      return store.state.thisSelectedProduct;
+    },
   },
 };
 </script>
