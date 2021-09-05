@@ -1,43 +1,14 @@
 <template>
-  <div>
-    <h1>modif produit view</h1>
-    <div class="container-modify">
-      <img :src="productToModify.imageUrl" alt="" />
-      {{ productToModify.imageUrl }}
-    </div>
-    <form class="form-modify">
-      <input type="text" placeholder="coucou" />
-    </form>
-  </div>
+  <ModifProduit />
 </template>
 
 <script>
-import store from "../store/index";
-
+import ModifProduit from "../components/Produits/ModifProduit.vue";
 export default {
-  name: "ModifProduit",
-  data() {
-    return {
-      productToModify: this.$store.state.modifProduit, // this.setModifs,
-    };
+  components: {
+    ModifProduit,
   },
-  methods: {
-    /*setModifs() {
-      return store.state.modifProduit;
-    }*/
-  },
-  beforeMount() {
-    return store.state.modifProduit;
-  },
-  computed: {},
 };
 </script>
 
-<style lang="scss">
-.container-modify {
-  & img {
-    height: 200px;
-    width: 200px;
-  }
-}
-</style>
+<style></style>

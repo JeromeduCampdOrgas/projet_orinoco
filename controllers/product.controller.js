@@ -107,17 +107,6 @@ module.exports.deleteOneProduct = async (req, res) => {
   }
 };
 
-//one product per categorie
-/*module.exports.getOneProductPerCategorie = async (req, res, next) => {
-  try {
-    let produits = "";
-    const products = await ProductModel.find();
-    console.log("coucou1");
-    produits = products;
-    res.status(200).json(_.uniq(produits));
-  } catch {}
-};*/
-
 //validation commande
 
 exports.orderValidated = (req, res, next) => {
