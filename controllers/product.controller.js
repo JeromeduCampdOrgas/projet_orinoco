@@ -14,6 +14,7 @@ const uuid = uuidv4();
 
 //Création produit
 module.exports.newProduct = async (req, res) => {
+  //console.log(req);
   let fileName;
   if (req.file !== null) {
     try {
@@ -45,9 +46,11 @@ module.exports.newProduct = async (req, res) => {
       description: req.body.description,
       stock: req.body.stock,
     });
+    //console.log(newProduct.name);
 
     try {
       const product = await newProduct.save();
+
       return res.status(201).json(product);
     } catch (err) {
       res.status(200).send({ err: "raté" });

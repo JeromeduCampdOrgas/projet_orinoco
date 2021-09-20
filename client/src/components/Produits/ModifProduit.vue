@@ -54,7 +54,7 @@
         id="stock"
       />
       <br />
-      <button @click="test">test</button>
+      <!--<button @click="test">test</button>-->
     </form>
   </div>
 </template>
@@ -76,7 +76,7 @@ export default {
     },
   },
   beforeMount() {
-    console.log(this.colors);
+    //console.log(this.colors);
     return store.state.modifProduit;
   },
   computed: {},

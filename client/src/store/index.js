@@ -1,6 +1,5 @@
 import Vuex from "vuex";
 import persistedState from "vuex-persistedstate";
-//import configAxios from "../axios/configAxios";
 
 /*****State************************************************/
 const state = {

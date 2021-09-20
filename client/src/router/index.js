@@ -50,6 +50,14 @@ const routes = [
       localStorage.getItem("token") ? next() : next({ name: "Login" });
     },
   },
+  {
+    path: "/creation",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/FormProduct.vue"),
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem("token") ? next() : next({ name: "Login" });
+    },
+  },
 ];
 
 const router = createRouter({

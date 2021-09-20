@@ -4,6 +4,11 @@
       <h1>produits</h1>
       <p>admin? {{ userLoggedIn.isAdmin }}</p>
       <p>nb Produits: {{ this.setNbProducts }}</p>
+      <input
+        type="button"
+        value="Créer un nouveau produit"
+        @click="creerProduit"
+      />
     </div>
     <div
       class="product-categorie"
@@ -44,7 +49,6 @@ export default {
         .catch((err) => err);
     },
     productsFirstPage() {
-      //let i =0
       for (let categorie of this.setCategories) {
         const found = this.setProducts.find(
           (element) => element.categorie == categorie
@@ -53,6 +57,10 @@ export default {
         this.imageUrl.push(found.imageUrl);
         store.dispatch("getFirstPage", this.firstPage);
       }
+    },
+
+    creerProduit() {
+      this.$router.push("/creation");
     },
   },
   beforeMount() {

@@ -10,16 +10,24 @@
         :key="item"
         :id="item._id"
       >
-        {{ item.name }}
-        <br />
-        référence: {{ item._id }}
-        <img :src="item.imageUrl" :alt="item.name" />
+        <div>
+          <p>{{ item.name }}</p>
+          <p>référence: {{ item._id }}</p>
+
+          <img :src="item.imageUrl" :alt="item.name" />
+        </div>
         <div class="commands" v-if="this.userLoggedIn.isAdmin">
           <img
             class="icons"
             src="../../../public/img/edit.svg"
             alt="edit"
             @click="edit"
+          />
+          <img
+            class="icons"
+            src="../../../public/img/trash.svg"
+            alt="trash"
+            @click="trash"
           />
         </div>
       </div>
@@ -34,7 +42,6 @@ import configAxios from "../../axios/configAxios";
 export default {
   data() {
     return {
-      test: true,
       selectedProductId: "",
       selectedProduct: "",
     };
@@ -42,19 +49,22 @@ export default {
   methods: {
     edit: async function(e) {
       let selectedProductId = e.path[2].id;
-      /*for (let i = 0; i < this.setProducts.length; i++) {
-        if (this.setProducts[i]._id === selectedProductId) {
-          this.selectedProduct = this.setProducts[i];
-        }
-      }*/
+      console.log(this.selectedProduct);
       configAxios.get(`product/${selectedProductId}`).then((res) => {
-        //console.log(res.data);
         this.selectedProduct = res.data;
-        //console.log(this.selectedProduct);
         store.dispatch("getModifProduit", this.selectedProduct);
 
         this.$router.push("/modification");
       });
+    },
+    trash(e) {
+      let selectedProductId = e.path[2].id;
+      configAxios.delete(`product/${selectedProductId}`).then(() =>
+        configAxios.get(`product`).then((res) => {
+          store.dispatch("getProducts", res.data);
+          this.$router.push("/AllProducts");
+        })
+      );
     },
   },
 
@@ -80,6 +90,17 @@ export default {
   & .icons {
     width: 30px;
     height: 30px;
+  }
+}
+.product-categorie {
+  width: 250px;
+  margin: auto;
+  margin-top: 50px;
+  border: 1px black solid;
+  & img {
+    width: 200px;
+    height: 200px;
+    margin: auto;
   }
 }
 </style>
