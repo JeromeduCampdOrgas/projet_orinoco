@@ -60,8 +60,8 @@ module.exports.newProduct = async (req, res) => {
 
 //get 1 produit
 module.exports.getProduct = (req, res) => {
-  console.log("coucou");
-  console.log(req.params.id);
+  //console.log("coucou");
+  //console.log(req.params.id);
   ProductModel.findOne({ _id: req.params.id }, (err, docs) => {
     res.send(docs);
   });

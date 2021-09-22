@@ -44,6 +44,7 @@ export default {
     return {
       selectedProductId: "",
       selectedProduct: "",
+      categories: this.$store.state.categories,
     };
   },
   methods: {
@@ -59,6 +60,18 @@ export default {
     },
     trash(e) {
       let selectedProductId = e.path[2].id;
+      console.log(e.path);
+      console.log(selectedProductId);
+      if (this.setNbProducts < 2) {
+        for (let i = 0; i < this.categories.length; i++) {
+          if (this.categories[i] === this.setSelectedProduct) {
+            console.log(this.setSelectedProduct);
+            this.categories.splice(i, 1);
+            console.log(this.categories);
+            store.dispatch("getCategories", this.categories);
+          }
+        }
+      }
       configAxios.delete(`product/${selectedProductId}`).then(() =>
         configAxios.get(`product`).then((res) => {
           store.dispatch("getProducts", res.data);
