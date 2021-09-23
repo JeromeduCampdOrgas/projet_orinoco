@@ -183,6 +183,8 @@ export default {
           this.unvalable = !this.unvalable;
           e.preventDefault();
         }
+        this.unvalable = false;
+        this.existe = false;
         const newProduct = new FormData();
         newProduct.set("name", this.dataProduct.name);
         newProduct.set("categorie", this.dataProduct.categorie);
