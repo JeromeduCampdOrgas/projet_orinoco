@@ -12,6 +12,7 @@ const state = {
   selectedCategorie: "",
   userLogged: false,
   modifProduit: "",
+  ajout: false,
 };
 
 /*****Getters**********************************************/
@@ -44,6 +45,9 @@ const getters = {
   getModifProduit: () => {
     return state.modifProduit;
   },
+  getModifAjout: () => {
+    return state.ajout;
+  },
 };
 
 /****Mutations**********************************************/
@@ -74,6 +78,9 @@ const mutations = {
   },
   SET_MODIF_PRODUIT: (state, produit) => {
     state.modifProduit = produit;
+  },
+  SET_AJOUT: (state, ajout) => {
+    state.ajout = ajout;
   },
 };
 
@@ -112,6 +119,10 @@ const actions = {
   },
   getModifProduit: ({ commit }, produit) => {
     commit("SET_MODIF_PRODUIT", produit);
+  },
+  //implique le choix du formulaire à afficher en fonction d'une catégorie existante ou non
+  getModifAjout: ({ commit }, ajout) => {
+    commit("SET_AJOUT", ajout);
   },
 };
 

@@ -62,6 +62,7 @@ export default {
   },
   methods: {
     connexion() {
+      store.dispatch("getModifAjout", false);
       //Obtenir toutes les catégories
       configAxios
         .get(`product/categories`)

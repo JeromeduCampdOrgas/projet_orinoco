@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1>Créer un nouveau produit</h1>
-    {{ this.unvalable }}
+    <h1>Créer un nouveau produit, nouvelle catégorie</h1>
+
+    {{ this.ajout }}
     <form class="form-create" id="myform">
       <div class="info-produit">
         <!-------------------------------------->
@@ -20,25 +21,11 @@
             name="name"
             id="name"
             v-model="dataProduct.name"
-            @focus="unvalableFocus"
+            @click="unvalableFocus"
           />
 
           <div class="personnalisation">
-            <select
-              name="optionCategory"
-              id="optionCategory"
-              v-model="dataProduct.categorie"
-              v-if="!ajout"
-              @click="unvalableFocus"
-            >
-              <option
-                v-for="optionCategory in this.categories"
-                :key="optionCategory"
-                :value="optionCategory"
-              >
-                {{ optionCategory }}
-              </option> </select
-            ><input
+            <input
               v-if="ajout"
               type="text"
               name="category"
@@ -46,7 +33,6 @@
               v-model="dataProduct.categorie"
               @click="existeFocus"
             />
-
             <button class="buttonOption" v-if="!ajout" @click="clickAjout">
               +
             </button>
@@ -104,9 +90,13 @@
           <p>- Un stock de produits est requis</p>
           <p>- Une photo du produit est requise</p>
         </div>
+        <div class="alerte" v-if="existe">
+          <span><img src="../../../public/img/danger.png"/></span>
+          <p>- La catégorie {{ this.dataProduct.categorie }} existe déjà</p>
+        </div>
       </div>
 
-      <button class="new-product" @click="creer">créer</button>
+      <button class="new-product" @click="creer">créer categorie</button>
       <button class="new-product" @click="retour">retour</button>
       <button class="new-product" @click="test">test</button>
     </form>
@@ -122,6 +112,7 @@ export default {
       ajout: this.$store.state.ajout,
       alertAjout: false,
       unvalable: false,
+      existe: false,
 
       dataProduct: {
         name: null,
@@ -138,8 +129,8 @@ export default {
   methods: {
     clickAjout() {
       this.ajout = !this.ajout;
-      this.unvalable = false;
       store.dispatch("getModifAjout", this.ajout);
+      location.replace("/creation");
     },
     ajouterPersonnalisation() {
       console.log("recoucou");
@@ -152,109 +143,76 @@ export default {
     },
     test() {
       let nom = document.getElementById("name").value;
+
       console.log(nom);
     },
     creer(e) {
+      console.log("hello");
       let nom = document.getElementById("name").value;
+      let categoryNew = document.getElementById("category").value;
       let description = document.getElementById("description").value;
       let prix = document.getElementById("price").value;
       let stock = document.getElementById("stock").value;
       let image = document.getElementById("image").value;
       if (this.ajout) {
-        let category = document.getElementById("category").value;
-        //let optionCategory = document.getElementById("optionCategory").value;
-
-        if (!nom || !category || !description || !prix || !stock || !image) {
-          this.unvalable = !this.unvalable;
-          console.log(this.unvalable);
-          e.preventDefault();
-        } else {
-          for (let i = 0; i < this.categories.length; i++) {
-            if (this.categories[i] === this.dataProduct.categorie) {
-              this.existe = !this.existe;
-              e.preventDefault();
-            }
+        for (let i = 0; i < this.categories.length; i++) {
+          if (this.categories[i] === this.dataProduct.categorie) {
+            this.existe = !this.existe;
+            e.preventDefault();
           }
-          this.unvalable = false;
-          this.existe = false;
-          const newProduct = new FormData();
-          newProduct.set("name", this.dataProduct.name);
-          newProduct.set("categorie", this.dataProduct.categorie);
-          newProduct.set("description", this.dataProduct.description);
-          newProduct.set("price", this.dataProduct.price);
-          newProduct.set("colors", this.dataProduct.colors);
-          newProduct.set("stock", this.dataProduct.stock);
-          newProduct.set("imageUrl", this.dataProduct.imageUrl);
-          //on crée le produit
-          configAxios
-            .post("/product", newProduct)
-            .then(() =>
-              //on récupére tous les produits en base
-              configAxios.get(`product`).then((res) => {
-                //on met le store à jour
-                store.dispatch("getProducts", res.data);
-                //A VERIFIER QUE LA NOUVELLE CATEGORIE N4EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
-                //on place la nouvelle catégorie dans le tableau en data this.categories
-                this.categories.push(this.dataProduct.categorie);
-                store.dispatch("getCategories", this.categories);
-                this.$router.push("/creation");
-              })
-            )
-            .catch((err) => err);
         }
-        //console.log(this.dataProduct.categorie);
-      } else {
-        let category = document.getElementById("optionCategory").value;
-        if (!nom || !category || !description || !prix || !stock || !image) {
+        if (
+          (this.ajout && !nom) ||
+          !categoryNew ||
+          !description ||
+          !prix ||
+          !stock ||
+          !image
+        ) {
           this.unvalable = !this.unvalable;
-          console.log(this.unvalable);
           e.preventDefault();
-        } else {
-          this.unvalable = false;
-          this.existe = false;
-          const newProduct = new FormData();
-          newProduct.set("name", this.dataProduct.name);
-          newProduct.set("categorie", this.dataProduct.categorie);
-          newProduct.set("description", this.dataProduct.description);
-          newProduct.set("price", this.dataProduct.price);
-          newProduct.set("colors", this.dataProduct.colors);
-          newProduct.set("stock", this.dataProduct.stock);
-          newProduct.set("imageUrl", this.dataProduct.imageUrl);
-          //on crée le produit
-          configAxios
-            .post("/product", newProduct)
-            .then(() =>
-              //on récupére tous les produits en base
-              configAxios.get(`product`).then((res) => {
-                //on met le store à jour
-                store.dispatch("getProducts", res.data);
-                //A VERIFIER QUE LA NOUVELLE CATEGORIE N4EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
-                //on place la nouvelle catégorie dans le tableau en data this.categories
-                this.categories.push(this.dataProduct.categorie);
-                store.dispatch("getCategories", this.categories);
-                this.$router.push("/creation");
-              })
-            )
-            .catch((err) => err);
         }
+        this.unvalable = false;
+        this.existe = false;
+        const newProduct = new FormData();
+        newProduct.set("name", this.dataProduct.name);
+        newProduct.set("categorie", this.dataProduct.categorie);
+        newProduct.set("description", this.dataProduct.description);
+        newProduct.set("price", this.dataProduct.price);
+        newProduct.set("colors", this.dataProduct.colors);
+        newProduct.set("stock", this.dataProduct.stock);
+        newProduct.set("imageUrl", this.dataProduct.imageUrl);
+        //on crée le produit
+        configAxios
+          .post("/product", newProduct)
+          .then(() =>
+            //on récupére tous les produits en base
+            configAxios.get(`product`).then((res) => {
+              //on met le store à jour
+              store.dispatch("getProducts", res.data);
+              //A VERIFIER QUE LA NOUVELLE CATEGORIE N4EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
+              //on place la nouvelle catégorie dans le tableau en data this.categories
+              this.categories.push(this.dataProduct.categorie);
+              store.dispatch("getCategories", this.categories);
+              this.$router.push("/creation");
+            })
+          )
+          .catch((err) => err);
       }
+      //console.log(this.dataProduct.categorie);
     },
     unvalableFocus() {
       if (this.unvalable) {
-        console.log(this.unvalable);
         this.unvalable = !this.unvalable;
-        console.log(this.unvalable);
       }
     },
-
     existeFocus() {
       if (this.existe) {
         this.existe = !this.existe;
       }
     },
   },
-};
-/*for (let i = 0; i < this.categories.length; i++) {
+  /*for (let i = 0; i < this.categories.length; i++) {
           if (this.categories[i] === this.dataProduct.categorie) {
             console.log(this.categories[i]);
             console.log("cette categorie existe déjà");
@@ -263,6 +221,7 @@ export default {
           }
         }
       }*/
+};
 </script>
 
 <style lang="scss">
