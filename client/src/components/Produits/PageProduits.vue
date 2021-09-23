@@ -15,6 +15,7 @@
           <p>référence: {{ item._id }}</p>
 
           <img :src="item.imageUrl" :alt="item.name" />
+          <p>{{ item.description }}</p>
         </div>
         <div class="commands" v-if="this.userLoggedIn.isAdmin">
           <img
@@ -65,9 +66,7 @@ export default {
       if (this.setNbProducts < 2) {
         for (let i = 0; i < this.categories.length; i++) {
           if (this.categories[i] === this.setSelectedProduct) {
-            console.log(this.setSelectedProduct);
             this.categories.splice(i, 1);
-            console.log(this.categories);
             store.dispatch("getCategories", this.categories);
           }
         }
