@@ -42,7 +42,7 @@
             <button class="buttonOption" v-if="!ajout" @click="clickAjout">
               +
             </button>
-            <span v-if="existe">Cette catégorie existe déjà!</span>
+            <span v-if="categorieExiste">Cette catégorie existe déjà!</span>
             <button class="buttonOption" v-if="ajout" @click="clickAjout">
               -
             </button>
@@ -145,8 +145,9 @@ export default {
       unvalable: false,
       colorOk: false,
       creationOk: false,
-      existe: false,
+      categorieExiste: false,
       colorsArray: [],
+      colorExiste: false,
 
       dataProduct: {
         name: null,
@@ -168,7 +169,7 @@ export default {
       let prix = document.getElementById("price").value;
       let stock = document.getElementById("stock").value;
       let image = document.getElementById("image").value;
-      //accès cateégorie
+      //accès catégorie
       //1°partie, on est dans le mode ajoutr de catégorie
       if (this.ajout) {
         let category = document.getElementById("category");
@@ -180,7 +181,7 @@ export default {
           for (let i = 0; i < this.categories.length; i++) {
             //console.log(category.value);
             if (this.categories[i] == category.value) {
-              this.existe = !this.existe;
+              this.categorieExiste = !this.categorieExiste;
             }
           }
         }
@@ -195,7 +196,7 @@ export default {
         e.preventDefault();
       } else {
         this.unvalable = false;
-        this.existe = false;
+        this.categorieExiste = false;
         //recherche des valeurs des options
         let elements = document.getElementsByClassName("optionValue");
         for (let i = 0; i < elements.length; i++) {
@@ -220,7 +221,18 @@ export default {
         newProduct.set("imageUrl", this.dataProduct.imageUrl);
 
         //requête Axios
-        configAxios.post("/product", newProduct);
+        configAxios.post("/product", newProduct).then(() =>
+          //on récupére tous les produits en base
+          configAxios.get(`product`).then((res) => {
+            //on met le store à jour
+            store.dispatch("getProducts", res.data);
+            if (this.ajout) {
+              this.categories.push(this.dataProduct.categorie);
+              store.dispatch("getCategories", this.categories);
+            }
+            this.$router.push("/creation");
+          })
+        );
       }
 
       e.preventDefault();
@@ -294,14 +306,14 @@ export default {
           for (let i = 0; i < this.categories.length; i++) {
             if (this.categories[i] === category) {
               console.log("categorie existante");
-              this.existe = !this.existe;
+              this.categorieExiste = !this.categorieExiste;
               this.creationOk = false;
               e.preventDefault();
             }
           }
 
           this.unvalable = false;
-          this.existe = false;
+          this.categorieExiste = false;
 
           e.preventDefault();
           let elements = document.getElementsByClassName("optionValue");
@@ -329,7 +341,7 @@ export default {
               configAxios.get(`product`).then((res) => {
                 //on met le store à jour
                 store.dispatch("getProducts", res.data);
-                //A VERIFIER QUE LA NOUVELLE CATEGORIE N4EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
+                //A VERIFIER QUE LA NOUVELLE CATEGORIE N'EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
                 //on place la nouvelle catégorie dans le tableau en data this.categories
                 this.categories.push(this.dataProduct.categorie);
                 store.dispatch("getCategories", this.categories);
@@ -347,7 +359,7 @@ export default {
           e.preventDefault();
         } else {
           this.unvalable = false;
-          this.existe = false;
+          this.categorieExiste = false;
 
           const newProduct = new FormData();
           newProduct.set("name", this.dataProduct.name);
@@ -365,7 +377,7 @@ export default {
               configAxios.get(`product`).then((res) => {
                 //on met le store à jour
                 store.dispatch("getProducts", res.data);
-                //A VERIFIER QUE LA NOUVELLE CATEGORIE N4EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
+                //A VERIFIER QUE LA NOUVELLE CATEGORIE N'EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
                 //on place la nouvelle catégorie dans le tableau en data this.categories
                 store.dispatch("getCategories", this.categories);
                 this.$router.push("/creation");
@@ -381,8 +393,8 @@ export default {
       }
     },
     existeFocus() {
-      if (this.existe) {
-        this.existe = !this.existe;
+      if (this.categorieExiste) {
+        this.categorieExiste = !this.categorieExiste;
       }
       if (this.unvalable) {
         this.unvalable = !this.unvalable;
