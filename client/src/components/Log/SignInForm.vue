@@ -3,7 +3,7 @@
     <div id="formHeader">
       <h2>Formulaire de connexion</h2>
     </div>
-    <form action="">
+    <form class="signInForm">
       <div class="form-div">
         <label for="email">email: </label>
         <input
@@ -44,8 +44,6 @@
 <script>
 import store from "../../store/index";
 import configAxios from "../../axios/configAxios";
-
-//import utils from "../Utils/axios";
 
 import jwtDecode from "jwt-decode";
 export default {
@@ -126,3 +124,4 @@ export default {
   },
 };
 </script>
+<style scoped></style>

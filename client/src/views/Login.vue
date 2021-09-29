@@ -3,7 +3,7 @@
     <div id="formHeader">
       <h2>Formulaire de connexion</h2>
     </div>
-    <form action="">
+    <form class="signInForm">
       <div class="form-div">
         <label for="email">email: </label>
         <input
@@ -73,7 +73,7 @@ export default {
       configAxios
         .get(`product`)
         .then((res) => {
-          console.log(res.data);
+          //console.log(res.data);
           store.dispatch("getProducts", res.data);
         })
         .catch((err) => err);
@@ -131,3 +131,14 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.signInForm {
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+  background: lightgray;
+  & .form-div {
+    margin: 10px;
+  }
+}
+</style>

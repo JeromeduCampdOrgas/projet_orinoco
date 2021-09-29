@@ -46,7 +46,7 @@ module.exports.newProduct = async (req, res) => {
       description: req.body.description,
       stock: req.body.stock,
     });
-    //console.log(newProduct.name);
+    console.log(req.body.colors);
 
     try {
       const product = await newProduct.save();
@@ -102,7 +102,7 @@ module.exports.deleteOneProduct = async (req, res) => {
     return res.status(400).send("ID unknown : " + req.params.id);
   } else {
     try {
-      await ProductModel.remove({ _id: req.params.id }).exec();
+      await ProductModel.deleteOne({ _id: req.params.id }).exec();
       res.status(200).json({ message: "Successfully deleted. " });
     } catch (err) {
       return res.status(500).json({ message: err });

@@ -2,7 +2,7 @@ const ProductModel = require("../models/product.model");
 
 //toutes les catégories
 module.exports.getAllCategories = (req, res) => {
-  console.log("coucou");
+  //console.log("coucou");
   try {
     ProductModel.find().distinct("categorie", function (error, categories) {
       // categories is an array of all ObjectIds
@@ -16,7 +16,7 @@ module.exports.getAllCategories = (req, res) => {
 
 //getAllProducts of One Categorie
 module.exports.getAllProductsCategorie = async (req, res) => {
-  console.log("coucou");
+  //console.log("coucou");
   await ProductModel.find({ categorie: req.params.categorie }, (err, docs) => {
     res.send(docs);
   });

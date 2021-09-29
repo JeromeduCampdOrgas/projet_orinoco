@@ -22,12 +22,14 @@
             class="icons"
             src="../../../public/img/edit.svg"
             alt="edit"
+            title="Modifier"
             @click="edit"
           />
           <img
             class="icons"
             src="../../../public/img/trash.svg"
             alt="trash"
+            title="Supprimer"
             @click="trash"
           />
         </div>
@@ -51,7 +53,6 @@ export default {
   methods: {
     edit: async function(e) {
       let selectedProductId = e.path[2].id;
-      console.log(this.selectedProduct);
       configAxios.get(`product/${selectedProductId}`).then((res) => {
         this.selectedProduct = res.data;
         store.dispatch("getModifProduit", this.selectedProduct);
@@ -113,6 +114,9 @@ export default {
     width: 200px;
     height: 200px;
     margin: auto;
+  }
+  & .icons {
+    margin: 0 30px;
   }
 }
 </style>

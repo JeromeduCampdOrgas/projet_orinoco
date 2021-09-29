@@ -13,6 +13,7 @@ const state = {
   userLogged: false,
   modifProduit: "",
   ajout: false,
+  color: [],
 };
 
 /*****Getters**********************************************/
@@ -48,6 +49,9 @@ const getters = {
   getModifAjout: () => {
     return state.ajout;
   },
+  getColorAjout: () => {
+    return state.color;
+  },
 };
 
 /****Mutations**********************************************/
@@ -81,6 +85,9 @@ const mutations = {
   },
   SET_AJOUT: (state, ajout) => {
     state.ajout = ajout;
+  },
+  SET_COLOR_AJOUT: (state, color) => {
+    state.color = color;
   },
 };
 
@@ -123,6 +130,10 @@ const actions = {
   //implique le choix du formulaire à afficher en fonction d'une catégorie existante ou non
   getModifAjout: ({ commit }, ajout) => {
     commit("SET_AJOUT", ajout);
+  },
+  //création couleur
+  getColorAjout: ({ commit }, color) => {
+    commit("SET_COLOR_AJOUT", color);
   },
 };
 

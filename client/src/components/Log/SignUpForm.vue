@@ -9,7 +9,7 @@
     <label for="password">Mot de passe</label>
     <input type="password" name="password" id="password" />
     <br />
-    <label for="confir-password">Confirmation mot de passe</label>
+    <label for="confirm-password">Confirmation mot de passe</label>
     <input type="password" name="confirm-password" id="confirm-password" />
     <br />
     <input type="submit" value="Valider inscription" />
