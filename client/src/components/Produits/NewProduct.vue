@@ -123,6 +123,10 @@
           <p>- Un stock de produits est requis</p>
           <p>- Une photo du produit est requise</p>
         </div>
+        <div class="alerte" v-if="colorExiste">
+          <span><img src="../../../public/img/danger.png"/></span>
+          <p>Cette option existe déjà</p>
+        </div>
       </div>
 
       <button class="new-product" @click="creer">créer</button>
@@ -162,7 +166,82 @@ export default {
     };
   },
   methods: {
-    test: function(e) {
+    colorexiste: function(e) {
+      this.colorsArray = [];
+      this.colorExiste = false;
+      console.log("1:colorExiste: " + this.colorExiste);
+      let elements = document.getElementsByClassName("optionValue");
+      for (let i = 0; i < elements.length - 1; i++) {
+        let color = elements[i].value;
+        this.colorsArray.push(color);
+      }
+      //console.log(e.target.value);
+      const found = this.colorsArray.find(
+        (element) => element == e.target.value
+      );
+      if (found) {
+        this.colorExiste = !this.colorExiste;
+      }
+      console.log("2:colorExiste: " + this.colorExiste);
+      e.preventDefault();
+    },
+    deleteoption(e) {
+      let elemParent = e.target.parentElement;
+      elemParent.remove();
+      e.preventDefault();
+    },
+    clickAjout() {
+      this.ajout = !this.ajout;
+      this.unvalable = false;
+      store.dispatch("getModifAjout", this.ajout);
+    },
+    optionsupp: function(e) {
+      let toutesOptions = document.getElementsByClassName("suboption");
+      for (let i = 0; i < toutesOptions.length; i++) {
+        if (toutesOptions[i].childNodes[0].value === "") {
+          console.log("mais euh!");
+          this.colorOk = false;
+        } else {
+          this.colorOk = true;
+          e.preventDefault();
+        }
+      }
+      if (this.colorOk == true) {
+        this.creationElement();
+        e.preventDefault();
+      }
+    },
+    creationElement() {
+      let option = document.getElementById("options");
+      let optionsup = document.createElement("div");
+      let suboption = document.createElement("input");
+      let boutonAjout = document.createElement("button");
+      suboption.setAttribute("class", "optionValue");
+      suboption.addEventListener("blur", this.colorexiste);
+      optionsup.setAttribute("class", "suboption");
+      suboption.setAttribute("type", "text");
+      suboption.setAttribute("name", "colors");
+
+      boutonAjout.innerHTML = "-";
+      boutonAjout.setAttribute("class", "buttonOption");
+      boutonAjout.addEventListener("click", function(e) {
+        let elemParent = e.target.parentElement;
+        elemParent.remove();
+        e.preventDefault();
+      });
+      option.appendChild(optionsup);
+      optionsup.appendChild(suboption);
+      optionsup.appendChild(boutonAjout);
+    },
+
+    retour() {
+      this.$router.push({ path: "/AllProducts" });
+    },
+    onFileChange(event) {
+      this.dataProduct.imageUrl = event.target.files[0];
+    },
+
+    creer: function(e) {
       //accès au dom
       let nom = document.getElementById("name").value;
       let description = document.getElementById("description").value;
@@ -199,6 +278,7 @@ export default {
         this.categorieExiste = false;
         //recherche des valeurs des options
         let elements = document.getElementsByClassName("optionValue");
+        this.colorsArray = [];
         for (let i = 0; i < elements.length; i++) {
           let color = elements[i].value;
           this.colorsArray.push(color);
@@ -236,156 +316,6 @@ export default {
       }
 
       e.preventDefault();
-    },
-    deleteoption(e) {
-      let elemParent = e.target.parentElement;
-      elemParent.remove();
-      e.preventDefault();
-    },
-    clickAjout() {
-      this.ajout = !this.ajout;
-      this.unvalable = false;
-      store.dispatch("getModifAjout", this.ajout);
-    },
-    optionsupp: function(e) {
-      let toutesOptions = document.getElementsByClassName("suboption");
-      for (let i = 0; i < toutesOptions.length; i++) {
-        if (toutesOptions[i].childNodes[0].value === "") {
-          console.log("mais euh!");
-          this.colorOk = false;
-        } else {
-          this.colorOk = true;
-          e.preventDefault();
-        }
-      }
-      if (this.colorOk == true) {
-        this.creationElement();
-        e.preventDefault();
-      }
-    },
-    creationElement() {
-      let option = document.getElementById("options");
-      let optionsup = document.createElement("div");
-      let suboption = document.createElement("input");
-      let boutonAjout = document.createElement("button");
-      suboption.setAttribute("class", "optionValue");
-      optionsup.setAttribute("class", "suboption");
-      suboption.setAttribute("type", "text");
-      suboption.setAttribute("name", "colors");
-      boutonAjout.innerHTML = "-";
-      boutonAjout.setAttribute("class", "buttonOption");
-      boutonAjout.addEventListener("click", function(e) {
-        let elemParent = e.target.parentElement;
-        elemParent.remove();
-        e.preventDefault();
-      });
-      option.appendChild(optionsup);
-      optionsup.appendChild(suboption);
-      optionsup.appendChild(boutonAjout);
-    },
-
-    retour() {
-      this.$router.push({ path: "/AllProducts" });
-    },
-    onFileChange(event) {
-      this.dataProduct.imageUrl = event.target.files[0];
-    },
-
-    creer(e) {
-      let nom = document.getElementById("name").value;
-      let description = document.getElementById("description").value;
-      let prix = document.getElementById("price").value;
-      let stock = document.getElementById("stock").value;
-      let image = document.getElementById("image").value;
-      if (this.ajout) {
-        let category = document.getElementById("category").value;
-        if (!nom || !category || !description || !prix || !stock || !image) {
-          this.unvalable = !this.unvalable;
-          e.preventDefault();
-        } else {
-          for (let i = 0; i < this.categories.length; i++) {
-            if (this.categories[i] === category) {
-              console.log("categorie existante");
-              this.categorieExiste = !this.categorieExiste;
-              this.creationOk = false;
-              e.preventDefault();
-            }
-          }
-
-          this.unvalable = false;
-          this.categorieExiste = false;
-
-          e.preventDefault();
-          let elements = document.getElementsByClassName("optionValue");
-
-          for (let i = 0; i < elements.length; i++) {
-            console.log(elements[i].value);
-            //localStorage.setItem("colors", elements[i].value);
-            this.dataProduct.colors.push(elements[i].value);
-          }
-          console.log(this.dataProduct.colors);
-          e.preventDefault();
-          const newProduct = new FormData();
-          newProduct.set("name", this.dataProduct.name);
-          newProduct.set("categorie", this.dataProduct.categorie);
-          newProduct.set("description", this.dataProduct.description);
-          newProduct.set("price", this.dataProduct.price);
-          newProduct.set("colors", this.dataProduct.colors);
-          newProduct.set("stock", this.dataProduct.stock);
-          newProduct.set("imageUrl", this.dataProduct.imageUrl);
-          //on crée le produit
-          configAxios
-            .post("/product", newProduct)
-            .then(() =>
-              //on récupére tous les produits en base
-              configAxios.get(`product`).then((res) => {
-                //on met le store à jour
-                store.dispatch("getProducts", res.data);
-                //A VERIFIER QUE LA NOUVELLE CATEGORIE N'EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
-                //on place la nouvelle catégorie dans le tableau en data this.categories
-                this.categories.push(this.dataProduct.categorie);
-                store.dispatch("getCategories", this.categories);
-                this.$router.push("/creation");
-              })
-            )
-            .catch((err) => err);
-        }
-        //console.log(this.dataProduct.categorie);
-      } else {
-        let category = document.getElementById("optionCategory").value;
-        if (!nom || !category || !description || !prix || !stock || !image) {
-          this.unvalable = !this.unvalable;
-          console.log(this.unvalable);
-          e.preventDefault();
-        } else {
-          this.unvalable = false;
-          this.categorieExiste = false;
-
-          const newProduct = new FormData();
-          newProduct.set("name", this.dataProduct.name);
-          newProduct.set("categorie", this.dataProduct.categorie);
-          newProduct.set("description", this.dataProduct.description);
-          newProduct.set("price", this.dataProduct.price);
-          newProduct.set("colors", this.dataProduct.colors);
-          newProduct.set("stock", this.dataProduct.stock);
-          newProduct.set("imageUrl", this.dataProduct.imageUrl);
-          //on crée le produit
-          configAxios
-            .post("/product", newProduct)
-            .then(() =>
-              //on récupére tous les produits en base
-              configAxios.get(`product`).then((res) => {
-                //on met le store à jour
-                store.dispatch("getProducts", res.data);
-                //A VERIFIER QUE LA NOUVELLE CATEGORIE N'EXISTE PAS DEJA!!!!!!!!!!!!!!!!!!!!!!!!
-                //on place la nouvelle catégorie dans le tableau en data this.categories
-                store.dispatch("getCategories", this.categories);
-                this.$router.push("/creation");
-              })
-            )
-            .catch((err) => err);
-        }
-      }
     },
     unvalableFocus() {
       if (this.unvalable) {
@@ -465,10 +395,13 @@ export default {
   background: red;
 }
 .alerte {
+  display: flex;
+  flex-direction: column;
   margin: 15px;
-  width: 25%;
+  width: 30%;
   align-items: center;
   & p {
+    margin: auto;
     text-align: left;
     color: red;
     font-weight: bold;
