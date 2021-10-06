@@ -3,7 +3,7 @@
     <div>
       <h1>Nos {{ this.setSelectedProduct }}</h1>
       <p>nb produits: {{ this.setNbProducts }}</p>
-
+      <button class="new-product" @click="retour">Retour</button>
       <div
         class="product-categorie"
         v-for="item in setProducts"
@@ -13,9 +13,20 @@
         <div>
           <p>{{ item.name }}</p>
           <p>référence: {{ item._id }}</p>
-
+          <p>Prix: {{ item.price / 100 }} €</p>
+          <p>Stock: {{ item.stock }}</p>
           <img :src="item.imageUrl" :alt="item.name" />
           <p>{{ item.description }}</p>
+          <label for="">Options</label>
+          <select name="optionColors" id="optionColors">
+            <option
+              v-for="optionColor in item.colors"
+              :key="optionColor"
+              :value="optionColor"
+            >
+              {{ optionColor }}
+            </option>
+          </select>
         </div>
         <div class="commands" v-if="this.userLoggedIn.isAdmin">
           <img
@@ -53,10 +64,11 @@ export default {
   methods: {
     edit: async function(e) {
       let selectedProductId = e.path[2].id;
+      //console.log(e.path[2].id);
       configAxios.get(`product/${selectedProductId}`).then((res) => {
         this.selectedProduct = res.data;
+        console.log(res.data);
         store.dispatch("getModifProduit", this.selectedProduct);
-
         this.$router.push("/modification");
       });
     },
@@ -78,6 +90,9 @@ export default {
           this.$router.push("/AllProducts");
         })
       );
+    },
+    retour() {
+      this.$router.push({ path: "/AllProducts" });
     },
   },
 

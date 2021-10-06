@@ -46,7 +46,6 @@ module.exports.newProduct = async (req, res) => {
       description: req.body.description,
       stock: req.body.stock,
     });
-    console.log(req.body.colors);
 
     try {
       const product = await newProduct.save();
@@ -79,11 +78,18 @@ module.exports.updateOneProduct = async (req, res) => {
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send("ID unknown : " + req.params.id);
   } else {
+    console.log(req.params.id);
+    console.log(req.body.stock);
+    console.log(req.body.price);
     await ProductModel.findOneAndUpdate(
       { _id: req.params.id },
       {
-        $set: { price: req.body.price },
-        $set: { colors: req.body.colors },
+        $set: {
+          name: req.body.name,
+          price: req.body.price,
+          stock: req.body.stock,
+          colors: req.body.colors,
+        },
       },
       { new: true, upsert: true, setDefaultsOnInsert: true },
       (err, docs) => {

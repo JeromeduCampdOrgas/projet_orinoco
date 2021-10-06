@@ -41,10 +41,11 @@ export default {
       configAxios
         .get(`categories/${categorie}`)
         .then((res) => {
+          console.log(res.data);
           store.dispatch("getPageProduits", res.data);
           store.dispatch("getSelectedCategorie", categorie);
           this.$router.push(categorie);
-          return store.state.selectedCategorie;
+          //return store.state.selectedCategorie;
         })
         .catch((err) => err);
     },
