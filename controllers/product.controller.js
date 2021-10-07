@@ -86,6 +86,7 @@ module.exports.updateOneProduct = async (req, res) => {
       {
         $set: {
           name: req.body.name,
+          description: req.body.description,
           price: req.body.price,
           stock: req.body.stock,
           colors: req.body.colors,

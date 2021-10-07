@@ -14,6 +14,7 @@ const state = {
   modifProduit: "",
   ajout: false,
   color: [],
+  recap: [],
 };
 
 /*****Getters**********************************************/
@@ -52,6 +53,9 @@ const getters = {
   getColorAjout: () => {
     return state.color;
   },
+  getRecapProduits: () => {
+    return state.recap;
+  },
 };
 
 /****Mutations**********************************************/
@@ -88,6 +92,9 @@ const mutations = {
   },
   SET_COLOR_AJOUT: (state, color) => {
     state.color = color;
+  },
+  SET_RECAP_PRODUITS: (state, produits) => {
+    state.recap = produits;
   },
 };
 
@@ -134,6 +141,10 @@ const actions = {
   //création couleur
   getColorAjout: ({ commit }, color) => {
     commit("SET_COLOR_AJOUT", color);
+  },
+  //tableau des produits par catégorie
+  getRecapProduits: ({ commit }, produits) => {
+    commit("SET_RECAP_PRODUITS", produits);
   },
 };
 

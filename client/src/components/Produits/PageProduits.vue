@@ -4,6 +4,7 @@
       <h1>Nos {{ this.setSelectedProduct }}</h1>
       <p>nb produits: {{ this.setNbProducts }}</p>
       <button class="new-product" @click="retour">Retour</button>
+      <button class="new-product" @click="recap">Récap</button>
       <div
         class="product-categorie"
         v-for="item in setProducts"
@@ -67,15 +68,13 @@ export default {
       //console.log(e.path[2].id);
       configAxios.get(`product/${selectedProductId}`).then((res) => {
         this.selectedProduct = res.data;
-        console.log(res.data);
         store.dispatch("getModifProduit", this.selectedProduct);
         this.$router.push("/modification");
       });
     },
     trash(e) {
       let selectedProductId = e.path[2].id;
-      console.log(e.path);
-      console.log(selectedProductId);
+
       if (this.setNbProducts < 2) {
         for (let i = 0; i < this.categories.length; i++) {
           if (this.categories[i] === this.setSelectedProduct) {
@@ -93,6 +92,9 @@ export default {
     },
     retour() {
       this.$router.push({ path: "/AllProducts" });
+    },
+    recap() {
+      this.$router.push("/recapitulatif");
     },
   },
 

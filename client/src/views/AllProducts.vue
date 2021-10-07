@@ -2,13 +2,14 @@
   <div class="container" v-show="isVisible">
     <div>
       <h1>produits</h1>
-      <p>admin? {{ userLoggedIn.isAdmin }}</p>
-      <p>nb Produits: {{ this.setNbProducts }}</p>
+
       <input
         type="button"
         value="Créer un nouveau produit"
         @click="creerProduit"
       />
+      <br />
+      <input type="button" value="Récapitulatif" @click="recapitulatif" />
     </div>
     <div
       class="product-categorie"
@@ -32,6 +33,9 @@ export default {
       firstPage: [],
       imageUrl: [],
       isVisible: true,
+      categories: store.state.categories,
+      products: store.state.products,
+      produits: [],
     };
   },
   methods: {
@@ -62,6 +66,22 @@ export default {
 
     creerProduit() {
       this.$router.push("/creation");
+    },
+    recapitulatif: async function() {
+      //console.log(this.categories);
+      for (let i = 0; i < this.categories.length; i++) {
+        let categorie = new Array();
+        let recapproduit = await configAxios.get(
+          `categories/${this.categories[i]}`
+        );
+        //console.log(categorie);
+        categorie[i] = this.categories[i]; //(
+        categorie[i] = recapproduit;
+        console.log(recapproduit);
+        this.produits.push(categorie[i]);
+      }
+      store.dispatch("getRecapProduits", this.produits);
+      this.$router.push("/recapitulatif");
     },
   },
   beforeMount() {

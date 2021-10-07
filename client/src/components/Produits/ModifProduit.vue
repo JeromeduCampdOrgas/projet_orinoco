@@ -1,8 +1,9 @@
 <template>
   <div>
+    <input type="button" value="Récapitulatif" @click="recap" />
     <h1>modif produit view</h1>
     <p>Référence: {{ productToModify._id }}</p>
-    {{ this.ajout }}
+
     <div class="container-modify">
       <img :src="productToModify.imageUrl" alt="" />
     </div>
@@ -133,6 +134,7 @@ export default {
     changeStock(e) {
       this.dataProduct.stock = e.target.value;
     },
+
     testCouleur: function() {
       let imageUrl = document.getElementsByTagName("img").src;
       console.log(imageUrl);
@@ -142,12 +144,10 @@ export default {
       let categorie = this.$store.state.modifProduit.categorie;
       //accès au dom
       let name = document.getElementById("name").value;
-      //let description = document.getElementById("description").value;
+      let description = document.getElementById("description").value;
       let price = document.getElementById("price").value;
       let stock = document.getElementById("stock").value;
-      //let image = document.getElementById("image").value;
       let elements = document.getElementsByClassName("optionValue");
-
       const found = this.colorsArray.find(
         (element) => element == e.target.value
       );
@@ -168,6 +168,7 @@ export default {
       configAxios
         .put("/product/" + id, {
           name: name,
+          description: description,
           price: price,
           stock: stock,
           colors: colors,
@@ -200,6 +201,9 @@ export default {
     retour() {
       this.$router.push({ path: "/AllProducts" });
     },
+    recap() {
+      this.$router.push("/recapitulatif");
+    },
     colorexiste: function(e) {
       this.colorsArray = [];
       this.colorExiste = false;
@@ -219,14 +223,19 @@ export default {
     },
     optionsupp: function(e) {
       let toutesOptions = document.getElementsByClassName("suboption");
-      console.log(toutesOptions);
-      for (let i = 0; i < toutesOptions.length; i++) {
-        if (toutesOptions[i].childNodes[0].value === "") {
-          console.log("mais euh!");
-          this.colorOk = false;
-        } else {
-          this.colorOk = true;
-          e.preventDefault();
+      if (toutesOptions.length == 0) {
+        this.creationElement();
+        console.log(toutesOptions.length);
+        e.preventDefault();
+      } else {
+        for (let i = 0; i < toutesOptions.length; i++) {
+          if (toutesOptions[i].childNodes[0].value === "") {
+            console.log("mais euh!");
+            this.colorOk = false;
+          } else {
+            this.colorOk = true;
+            e.preventDefault();
+          }
         }
       }
       if (this.colorOk == true) {
