@@ -3,8 +3,8 @@
     <div>
       <h1>Nos {{ this.setSelectedProduct }}</h1>
       <p>nb produits: {{ this.setNbProducts }}</p>
-      <button class="new-product" @click="retour">Retour</button>
-      <button class="new-product" @click="recap">Récap</button>
+    </div>
+    <div class="productList">
       <div
         class="product-categorie"
         v-for="item in setProducts"
@@ -12,11 +12,12 @@
         :id="item._id"
       >
         <div>
-          <p>{{ item.name }}</p>
+          <p class="productName">{{ item.name }}</p>
+          <img :src="item.imageUrl" :alt="item.name" />
           <p>référence: {{ item._id }}</p>
           <p>Prix: {{ item.price / 100 }} €</p>
           <p>Stock: {{ item.stock }}</p>
-          <img :src="item.imageUrl" :alt="item.name" />
+
           <p>{{ item.description }}</p>
           <label for="">Options</label>
           <select name="optionColors" id="optionColors">
@@ -90,12 +91,6 @@ export default {
         })
       );
     },
-    retour() {
-      this.$router.push({ path: "/AllProducts" });
-    },
-    recap() {
-      this.$router.push("/recapitulatif");
-    },
   },
 
   computed: {
@@ -116,24 +111,56 @@ export default {
 </script>
 
 <style lang="scss">
+.container {
+  display: flex;
+  flex-direction: column;
+}
 .commands {
+  background: #ddd;
+  padding: 5px;
+  margin-top: 5px;
   & .icons {
     width: 30px;
     height: 30px;
   }
 }
+.productList {
+  display: flex;
+  flex-direction: column;
+}
 .product-categorie {
-  width: 250px;
+  width: 100%;
   margin: auto;
   margin-top: 50px;
   border: 1px black solid;
+  & .productName {
+    background: #ddd;
+    padding: 5px;
+  }
   & img {
     width: 200px;
     height: 200px;
     margin: auto;
   }
+  & label {
+    font-weight: bold;
+  }
   & .icons {
     margin: 0 30px;
+  }
+}
+
+@media screen and(min-width: 768px) {
+  .productList {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    & .product-categorie {
+      margin: 20px 20px;
+      width: 25%;
+    }
   }
 }
 </style>

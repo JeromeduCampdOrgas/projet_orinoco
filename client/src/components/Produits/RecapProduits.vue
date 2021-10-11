@@ -1,8 +1,6 @@
 <template>
   <div>
     <h1>Récapitulatif</h1>
-    <input type="button" value="Retour" @click="retour" />
-    <img src="" alt="" />
 
     <div v-for="item in this.$store.state.recap" :key="item">
       <p>{{ item.data[0].categorie }}</p>
@@ -21,8 +19,8 @@
         </thead>
         <tbody>
           <tr v-for="elem in item.data" :key="elem">
-            <td>
-              <img :src="elem.imageUrl" alt="" height="30" width="30" />
+            <td class="image">
+              <img :src="elem.imageUrl" alt="" />
             </td>
             <td>{{ elem.name }}</td>
             <td>{{ elem._id }}</td>
@@ -112,20 +110,26 @@ export default {
         this.$router.push("/modification");
       });
     },
-    retour: function() {
-      this.$router.push({ path: "/AllProducts" });
-    },
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+table {
+  width: 100%;
+}
 table,
 td {
   border: 1px black solid;
   border-collapse: collapse;
 }
 thead {
-  background-color: rgb(243, 233, 241);
+  background: linear-gradient(rgb(243, 233, 241), #9667da);
+}
+.image {
+  width: 10%;
+  & img {
+    width: 100%;
+  }
 }
 </style>

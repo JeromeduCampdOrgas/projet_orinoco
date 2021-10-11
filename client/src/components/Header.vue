@@ -12,4 +12,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+header {
+  margin: auto;
+  max-width: 80%;
+  height: 400px;
+  & img {
+    width: 100%;
+    height: 400px;
+  }
+}
+</style>

@@ -1,24 +1,18 @@
 <template>
-  <div class="container" v-show="isVisible">
+  <div>
     <div>
-      <h1>produits</h1>
-
-      <input
-        type="button"
-        value="Créer un nouveau produit"
-        @click="creerProduit"
-      />
-      <br />
-      <input type="button" value="Récapitulatif" @click="recapitulatif" />
+      <h1>Tous les produits</h1>
     </div>
-    <div
-      class="product-categorie"
-      v-for="item in this.firstPage"
-      v-bind:key="item"
-      @click="pageProduits"
-    >
-      <img :src="item.imageUrl" :alt="item.categorie" />
-      {{ item.categorie }}
+    <div class="container" v-show="isVisible">
+      <div
+        class="product-categorie"
+        v-for="item in this.firstPage"
+        v-bind:key="item"
+        @click="pageProduits"
+      >
+        <img :src="item.imageUrl" :alt="item.categorie" />
+        <p>{{ item.categorie }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -63,26 +57,6 @@ export default {
         store.dispatch("getFirstPage", this.firstPage);
       }
     },
-
-    creerProduit() {
-      this.$router.push("/creation");
-    },
-    recapitulatif: async function() {
-      //console.log(this.categories);
-      for (let i = 0; i < this.categories.length; i++) {
-        let categorie = new Array();
-        let recapproduit = await configAxios.get(
-          `categories/${this.categories[i]}`
-        );
-        //console.log(categorie);
-        categorie[i] = this.categories[i]; //(
-        categorie[i] = recapproduit;
-        console.log(recapproduit);
-        this.produits.push(categorie[i]);
-      }
-      store.dispatch("getRecapProduits", this.produits);
-      this.$router.push("/recapitulatif");
-    },
   },
   beforeMount() {
     this.productsFirstPage();
@@ -118,7 +92,9 @@ export default {
 <style lang="scss">
 .container {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
 }
 .form {
   text-align: center;
@@ -126,10 +102,30 @@ export default {
 .product-categorie {
   display: flex;
   flex-direction: column;
+  margin: 15px auto;
   border: 1px black solid;
+  width: 80%;
   & img {
-    height: 200px;
-    width: 200px;
+    width: 100%;
+  }
+  & p {
+    font-weight: bold;
+  }
+}
+.product-categorie:hover {
+  cursor: pointer;
+}
+@media only screen and (min-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    flex-wrap: wrap;
+    width: 100%;
+    & .product-categorie {
+      width: 30%;
+      margin: 15px auto;
+    }
   }
 }
 </style>

@@ -14,7 +14,7 @@
               @focus="unvalableFocus"
             />
           </div>
-          <div class="personnalisation">
+          <div class="personnalisation" id="categorie">
             <label for="category">Catégorie</label>
             <select
               name="optionCategory"
@@ -39,11 +39,19 @@
               @click="existeFocus"
             />
 
-            <button class="buttonOption" v-if="!ajout" @click="clickAjout">
+            <button
+              class="buttonOption ajoutSuppr"
+              v-if="!ajout"
+              @click="clickAjout"
+            >
               +
             </button>
             <span v-if="categorieExiste">Cette catégorie existe déjà!</span>
-            <button class="buttonOption" v-if="ajout" @click="clickAjout">
+            <button
+              class="buttonOption ajoutSuppr"
+              v-if="ajout"
+              @click="clickAjout"
+            >
               -
             </button>
           </div>
@@ -74,7 +82,7 @@
                 <label for="colors">Options</label>
               </div>
               <button class="buttonOption ajoutOption" @click="optionsupp">
-                Ajouter une option
+                Autre option
               </button>
             </div>
             <div id="options">
@@ -87,7 +95,7 @@
                   id="colors"
                   @click="inputFocus"
                 />
-                <button class="buttonOption" @click="deleteoption">
+                <button class="buttonOption ajoutSuppr" @click="deleteoption">
                   -
                 </button>
               </div>
@@ -104,7 +112,7 @@
             />
           </div>
           <div class="personnalisation">
-            <label for="image">Image</label>
+            <label for="image" id="labelImage">Image</label>
             <input
               type="file"
               name="image"
@@ -129,9 +137,7 @@
         </div>
       </div>
 
-      <button class="new-product" @click="creer">créer</button>
-      <button class="new-product" @click="retour">retour</button>
-      <button class="new-product" @click="test">test</button>
+      <button class="new-product" @click="creer">Valider</button>
     </form>
   </div>
 </template>
@@ -234,9 +240,6 @@ export default {
       optionsup.appendChild(boutonAjout);
     },
 
-    retour() {
-      this.$router.push({ path: "/AllProducts" });
-    },
     onFileChange(event) {
       this.dataProduct.imageUrl = event.target.files[0];
     },
@@ -337,25 +340,25 @@ export default {
 <style lang="scss">
 .form-create {
   background: lightgrey;
-  width: 70%;
+  width: 100%;
   margin: auto;
   & .personnalisation {
     display: flex;
+    margin-bottom: 10px;
   }
   & .info-produit {
     display: flex;
     justify-content: center;
-    width: 80%;
+    width: 95%;
     margin: auto;
   }
-
   & .infos {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin: 10px 0;
     text-align: left;
-    width: 85%;
+    width: 95%;
     & label {
       width: 45%;
     }
@@ -372,15 +375,36 @@ export default {
     }
 
     & .buttonOption {
+      font-weight: bold;
+    }
+    & .ajoutSuppr {
       margin-left: 10px;
-      height: 22px;
+      width: 30px;
+      height: 25px;
+      vertical-align: middle;
+      font-weight: bold;
+      border-color: white;
+      border-radius: 5px;
     }
     & .ajoutOption {
-      background: green;
+      background: lightgray;
       margin: 2px 0;
+      padding: 5px;
+      font-size: 0.9em;
+      vertical-align: middle;
+      width: 70%;
+      height: 50px;
+      margin-top: 10px;
+      border-color: white;
+      border-radius: 5px;
+    }
+    & .ajoutSuppr:hover,
+    .ajoutOption:hover {
+      background: lighten($color: lightgreen, $amount: 3);
     }
   }
-  & .label {
+  & label {
+    font-weight: bold;
     width: 25%;
   }
   &.infos {
@@ -388,7 +412,15 @@ export default {
   }
 }
 .new-product {
+  font-weight: bold;
   margin: 30px;
+  width: 100px;
+  height: 50px;
+  border-color: white;
+  border-radius: 5px;
+}
+.new-product:hover {
+  background: linear-gradient(rgb(243, 233, 241), #9667da);
 }
 .icone {
   width: 18px;
@@ -426,9 +458,37 @@ export default {
     flex-direction: column;
   }
 }
-#packOptions {
+#packOptions,
+#categorie {
   border: 1px black solid;
   background: #eee;
-  padding-top: 5px;
+  padding: 10px;
+  width: 95%;
+
+  & .suboption {
+    background: grey;
+    & input {
+      width: 75%;
+    }
+  }
+}
+#image {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+#labelImage {
+  width: 20%;
+}
+
+@media screen and(min-width: 768px) {
+  .form-create {
+    width: 50%;
+    margin: auto;
+
+    & .info-produit {
+      width: 80%;
+      margin: auto;
+    }
+  }
 }
 </style>

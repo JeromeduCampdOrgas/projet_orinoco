@@ -1,7 +1,6 @@
 <template>
   <div>
-    <input type="button" value="Récapitulatif" @click="recap" />
-    <h1>modif produit view</h1>
+    <h1>Modification du produit {{ productToModify.name }}</h1>
     <p>Référence: {{ productToModify._id }}</p>
 
     <div class="container-modify">
@@ -94,8 +93,6 @@
       <button class="new-product" @click="modifValidation">
         Valider les modifications
       </button>
-      <button class="new-product" @click="retour">Retour</button>
-      <button class="new-product" @click="testCouleur">couleur</button>
     </form>
   </div>
 </template>
@@ -135,10 +132,6 @@ export default {
       this.dataProduct.stock = e.target.value;
     },
 
-    testCouleur: function() {
-      let imageUrl = document.getElementsByTagName("img").src;
-      console.log(imageUrl);
-    },
     modifValidation: function(e) {
       let id = this.$store.state.modifProduit._id;
       let categorie = this.$store.state.modifProduit.categorie;
@@ -198,9 +191,7 @@ export default {
 
       this.$router.push(this.categorie);
     },
-    retour() {
-      this.$router.push({ path: "/AllProducts" });
-    },
+
     recap() {
       this.$router.push("/recapitulatif");
     },
@@ -368,16 +359,14 @@ export default {
 }
 .form-modify {
   background: lightgrey;
-  width: 70%;
-  margin: auto;
+  width: 100%;
   & .personnalisation {
     display: flex;
   }
   & .info-produit {
     display: flex;
     justify-content: center;
-    width: 80%;
-    margin: auto;
+    width: 100%;
   }
 
   & .infos {
@@ -386,7 +375,7 @@ export default {
     justify-content: space-between;
     margin: 10px 0;
     text-align: left;
-    width: 85%;
+    width: 95%;
     & label {
       width: 45%;
     }
@@ -394,7 +383,6 @@ export default {
       margin-top: 5px;
       margin-bottom: 5px;
       margin-left: 5px;
-      margin-right: 5px;
     }
     & select {
       margin-left: 5px;
@@ -458,6 +446,17 @@ export default {
     border: 1px black solid;
     display: flex;
     flex-direction: column;
+  }
+}
+
+@media screen and(min-width: 768px) {
+  .form-modify {
+    width: 65%;
+    margin: auto;
+    & .info-produit {
+      width: 80%;
+      margin: auto;
+    }
   }
 }
 </style>

@@ -2,7 +2,38 @@
   <div>
     <Header />
     <div id="nav">
-      <button v-if="this.setUserLogged" @click="deconnect">Déconnexion</button>
+      <div id="burger" @click="menuvisibility">
+        <img
+          class="icons"
+          src="../public/img/menu.svg"
+          alt="menu"
+          title="Modifier"
+        />
+      </div>
+      <div id="mobileMenu" v-if="this.menuVisible">
+        <router-link v-if="this.setUserLogged" to="/" @click="deconnect"
+          >Déconnexion</router-link
+        >
+        <router-link to="/AllProducts">Tous les produits</router-link>
+
+        <router-link to="/recapitulatif" @click="recapitulatif"
+          >Récapitulatif</router-link
+        >
+        <router-link to="/creation">Nouveau produit</router-link>
+      </div>
+
+      <div id="desktopMenu">
+        <router-link v-if="this.setUserLogged" to="/" @click="deconnect"
+          >Déconnexion</router-link
+        >
+        <router-link to="/AllProducts">Tous les produits</router-link>
+
+        <router-link to="/recapitulatif" @click="recapitulatif"
+          >Récapitulatif</router-link
+        >
+
+        <router-link to="/creation">Nouveau produit</router-link>
+      </div>
     </div>
     <router-view />
   </div>
@@ -10,15 +41,41 @@
 <script>
 import Header from "./components/Header.vue";
 import store from "./store/index";
+import configAxios from "../../client/src/axios/configAxios";
 export default {
   data() {
-    return {};
+    return {
+      menuVisible: false,
+      categories: store.state.categories,
+      products: store.state.products,
+      produits: [],
+    };
   },
   components: { Header },
   methods: {
     deconnect: function() {
       localStorage.clear();
       window.location.replace("/");
+    },
+    menuvisibility() {
+      this.menuVisible = !this.menuVisible;
+    },
+
+    recapitulatif: async function() {
+      //console.log(this.categories);
+      for (let i = 0; i < this.categories.length; i++) {
+        let categorie = new Array();
+        let recapproduit = await configAxios.get(
+          `categories/${this.categories[i]}`
+        );
+        //console.log(categorie);
+        categorie[i] = this.categories[i]; //(
+        categorie[i] = recapproduit;
+        console.log(recapproduit);
+        this.produits.push(categorie[i]);
+      }
+      store.dispatch("getRecapProduits", this.produits);
+      //this.$router.push("/recapitulatif");
     },
   },
   computed: {
@@ -59,18 +116,49 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin: auto;
 }
 
+li {
+  list-style: none;
+  text-align: center;
+}
 #nav {
   padding: 30px;
 
   a {
+    text-decoration: none;
     font-weight: bold;
     color: #2c3e50;
-
+    background: linear-gradient(rgb(243, 233, 241), #9667da);
+    margin: auto 15px;
+    padding: 5px;
     &.router-link-exact-active {
-      color: #42b983;
+      color: white;
     }
+  }
+
+  & #mobileMenu {
+    display: flex;
+    flex-direction: column;
+  }
+  &#desktopMenu {
+    display: none;
+  }
+}
+
+/************************ */
+@media screen and(min-width: 768px) {
+  #burger {
+    display: none;
+    & #mobileMenu {
+      display: none;
+    }
+  }
+}
+@media screen and(max-width: 768px) {
+  #desktopMenu {
+    display: none;
   }
 }
 </style>
