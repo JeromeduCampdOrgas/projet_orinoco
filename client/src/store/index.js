@@ -15,6 +15,7 @@ const state = {
   ajout: false,
   color: [],
   recap: [],
+  users: [],
 };
 
 /*****Getters**********************************************/
@@ -56,6 +57,9 @@ const getters = {
   getRecapProduits: () => {
     return state.recap;
   },
+  getAllUsers: () => {
+    return state.users;
+  },
 };
 
 /****Mutations**********************************************/
@@ -95,6 +99,9 @@ const mutations = {
   },
   SET_RECAP_PRODUITS: (state, produits) => {
     state.recap = produits;
+  },
+  SET_ALL_USERS: (state, users) => {
+    state.users = users;
   },
 };
 
@@ -145,6 +152,9 @@ const actions = {
   //tableau des produits par catégorie
   getRecapProduits: ({ commit }, produits) => {
     commit("SET_RECAP_PRODUITS", produits);
+  },
+  getAllUsers: ({ commit }, users) => {
+    commit("SET_ALL_USERS", users);
   },
 };
 

@@ -15,7 +15,7 @@ export default {
 <style lang="scss">
 header {
   margin: auto;
-  max-width: 80%;
+  max-width: 100%;
   height: 400px;
   & img {
     width: 100%;

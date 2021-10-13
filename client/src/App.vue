@@ -1,6 +1,7 @@
 <template>
   <div>
     <Header />
+
     <div id="nav">
       <div id="burger" @click="menuvisibility">
         <img
@@ -26,13 +27,26 @@
         <router-link v-if="this.setUserLogged" to="/" @click="deconnect"
           >Déconnexion</router-link
         >
-        <router-link to="/AllProducts">Tous les produits</router-link>
+        <router-link to="/AllProducts" v-if="this.setUserLogged"
+          >Tous les produits</router-link
+        >
 
-        <router-link to="/recapitulatif" @click="recapitulatif"
+        <router-link
+          to="/recapitulatif"
+          @click="recapitulatif"
+          v-if="this.setUserLogged"
           >Récapitulatif</router-link
         >
 
-        <router-link to="/creation">Nouveau produit</router-link>
+        <router-link to="/creation" v-if="this.setUserLogged"
+          >Nouveau produit</router-link
+        >
+        <router-link
+          to="/utilisateurs"
+          v-if="this.userLoggedIn.isAdmin"
+          @click="getusers"
+          >Admin utilisateurs</router-link
+        >
       </div>
     </div>
     <router-view />
@@ -49,6 +63,7 @@ export default {
       categories: store.state.categories,
       products: store.state.products,
       produits: [],
+      token: localStorage.getItem("token"),
     };
   },
   components: { Header },
@@ -76,6 +91,11 @@ export default {
       }
       store.dispatch("getRecapProduits", this.produits);
       //this.$router.push("/recapitulatif");
+    },
+    getusers: async function() {
+      await configAxios
+        .get("user")
+        .then((res) => store.dispatch("getAllUsers", res.data));
     },
   },
   computed: {

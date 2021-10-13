@@ -66,6 +66,14 @@ const routes = [
       localStorage.getItem("token") ? next() : next({ name: "Login" });
     },
   },
+  {
+    path: "/utilisateurs",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Users.vue"),
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem("token") ? next() : next({ name: "Login" });
+    },
+  },
 ];
 
 const router = createRouter({
