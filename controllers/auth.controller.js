@@ -12,7 +12,6 @@ const createToken = (id, isAdmin) => {
 
 module.exports.signUp = async (req, res) => {
   const { pseudo, email, password, isAdmin } = req.body;
-  console.log(req.body);
   try {
     const user = await UserModel.create({ pseudo, email, password, isAdmin });
     res.status(201).json({ user: user._id });

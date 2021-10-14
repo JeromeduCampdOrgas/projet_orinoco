@@ -16,6 +16,7 @@ const state = {
   color: [],
   recap: [],
   users: [],
+  user: "",
 };
 
 /*****Getters**********************************************/
@@ -60,6 +61,9 @@ const getters = {
   getAllUsers: () => {
     return state.users;
   },
+  getOneUser: () => {
+    return state.user;
+  },
 };
 
 /****Mutations**********************************************/
@@ -102,6 +106,9 @@ const mutations = {
   },
   SET_ALL_USERS: (state, users) => {
     state.users = users;
+  },
+  SET_ONE_USER: (state, user) => {
+    state.user = user;
   },
 };
 
@@ -155,6 +162,9 @@ const actions = {
   },
   getAllUsers: ({ commit }, users) => {
     commit("SET_ALL_USERS", users);
+  },
+  getOneUser: ({ commit }, user) => {
+    commit("SET_ONE_USER", user);
   },
 };
 

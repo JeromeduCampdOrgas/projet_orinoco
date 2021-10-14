@@ -21,10 +21,13 @@ module.exports.updateUser = async (req, res) => {
     return res.status(400).send("ID unknown : " + req.params.id);
 
   try {
+    console.log(req.body.isAdmin);
     await UserModel.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {
+          pseudo: req.body.pseudo,
+          email: req.body.email,
           isAdmin: req.body.isAdmin,
         },
       },

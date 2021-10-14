@@ -1,34 +1,47 @@
 <template>
-  <div class="bloc-modale" v-if="revele">
-    <div class="overlay" @click="toggleModale"></div>
+  <div class="bloc-modale" v-if="updateRevele">
+    <div class="overlay" @click="toggleUpdate"></div>
 
     <div class="modale ">
-      <div class="btn-modale btn btn-danger" @click="toggleModale">X</div>
-      <h2>Nouvel utilisateur</h2>
-      <form action="">
-        <div>
+      <div class="btn-modale btn btn-danger" @click="toggleUpdate">X</div>
+      <h2>Modifier utilisateur</h2>
+      {{ this.userAdmin }}
+      <form id="updateForm" action="">
+        <div id="nom">
           <label for="name">Pseudo</label>
-          <input type="text" v-model="this.dataUser.username" />
+          <input type="text" :value="this.$store.state.user.pseudo" />
         </div>
-        <div>
+        <div id="email">
           <label for="email">Email</label>
-          <input name="email" type="email" v-model="this.dataUser.email" />
+          <input
+            name="email"
+            type="email"
+            :value="this.$store.state.user.email"
+          />
         </div>
-        <div>
-          <label for="password">Password</label>
-          <input type="password" v-model="this.dataUser.password" />
-        </div>
+
         <div id="admin">
           <label for="isAdmin">Admin</label>
-          <input type="checkbox" v-model="isAdmin" @click="admin" />
+          <input
+            type="checkbox"
+            @click="admin"
+            :checked="false"
+            v-if="!this.$store.state.user.isAdmin"
+          />
+          <input
+            type="checkbox"
+            @click="admin"
+            :checked="true"
+            v-if="this.$store.state.user.isAdmin"
+          />
         </div>
         <div>
           <p class="alert" v-if="alerte">
-            Hormis le mot de passe un pseudo et un email sont requis
+            >Un pseudo et un email sont requis
           </p>
           <div id="buttons">
-            <button class="btn-success" @click="createUser">Valider</button>
-            <button class="btn-danger" @click="toggleModale, erreur">
+            <button class="btn-success" @click="updateUser">Valider</button>
+            <button class="btn-danger" @click="toggleUpdate">
               Annuler
             </button>
           </div>
@@ -42,20 +55,25 @@
 import configAxios from "../../axios/configAxios";
 import store from "../../store/index";
 export default {
-  name: "Modale",
-  props: ["revele", "toggleModale"],
+  name: "updateModale",
+  props: ["updateRevele", "toggleUpdate", "userAdmin"],
   data() {
     return {
       dataUser: {
-        username: "",
+        pseudo: "",
         email: "",
-        password: "Administrateur",
-        isAdmin: false,
+        isAdmin: this.userAdmin,
       },
       alerte: false,
+      users: this.$store.state.users,
     };
   },
   methods: {
+    test(e) {
+      console.log("dataUser: " + this.dataUser.isAdmin);
+
+      e.preventDefault();
+    },
     erreur: function() {
       if (this.alerte) {
         this.alerte = false;
@@ -64,32 +82,28 @@ export default {
     admin: function() {
       this.dataUser.isAdmin = !this.dataUser.isAdmin;
     },
-    createUser: function(e) {
-      if (!this.dataUser.username || !this.dataUser.email) {
+    updateUser: async function(e) {
+      let pseudo = document.getElementById("nom").lastChild.value;
+      console.log(pseudo);
+      let email = document.getElementById("email").lastChild.value;
+      let isAdmin = this.dataUser.isAdmin;
+      if (!pseudo || !email) {
         this.alerte = !this.alerte;
-        e.preventDefault();
       } else {
-        let pseudo = this.dataUser.username;
-        let email = this.dataUser.email;
-        let password = "Administrateur";
-        let isAdmin = this.dataUser.isAdmin;
-
         configAxios
-          .post("user/register", {
+          .put(`/user/${store.state.user._id}`, {
             pseudo: pseudo,
             email: email,
-            password: password,
             isAdmin: isAdmin,
           })
-          .then(() =>
+          .then(() => {
             configAxios.get("user").then((res) => {
-              console.log(res.data);
               store.dispatch("getAllUsers", res.data);
               location.replace("/utilisateurs");
-            })
-          );
+            });
+          });
       }
-      //this.toggleModale;
+      e.preventDefault();
     },
   },
 };

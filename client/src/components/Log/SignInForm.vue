@@ -81,7 +81,7 @@ export default {
       const email = this.dataConnexion.email;
       const password = this.dataConnexion.password;
       const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
-      const regexPassword = /^(?=.*\d).{4,10}$/; //chaîne de 4 à 10 caractères
+      const regexPassword = /^(?=.*\d).{4,15}$/; //chaîne de 4 à 10 caractères
       if (
         !email ||
         !regexEmail.test(email) ||

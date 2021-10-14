@@ -7,6 +7,11 @@
         v-bind:revele="revele"
         v-bind:toggleModale="toggleModale"
       ></modale>
+      <updateModale
+        v-bind:updateRevele="updateRevele"
+        v-bind:toggleUpdate="toggleUpdate"
+        v-bind:userAdmin="userAdmin"
+      ></updateModale>
     </div>
     <table>
       <thead>
@@ -18,7 +23,7 @@
           <td>Actions</td>
         </tr>
       </thead>
-      <tr v-for="user in this.usersArray" :key="user">
+      <tr v-for="user in this.$store.state.users" :key="user">
         <td>{{ user.pseudo }}</td>
         <td>{{ user._id }}</td>
         <td>{{ user.email }}</td>
@@ -32,7 +37,7 @@
             alt="edit"
             title="Modifier"
             width="30"
-            @click="edit"
+            @click="toggleUpdate"
           />
           <img
             class="icons"
@@ -51,21 +56,38 @@
 <script>
 import configAxios from "../../axios/configAxios";
 import store from "../../store/index";
-import Modale from "./Modale.vue";
+import Modale from "./CreateUser.vue";
+import updateModale from "./UpdateUser.vue";
 export default {
   name: "Users",
   components: {
     modale: Modale,
+    updateModale: updateModale,
   },
   data() {
     return {
       usersArray: store.state.users,
       revele: false,
+      updateRevele: false,
+      userAdmin: false,
     };
   },
   methods: {
     toggleModale: function() {
       this.revele = !this.revele;
+    },
+    toggleUpdate: function(e) {
+      let userToUpdate = e.target.parentNode.parentNode.childNodes[1].innerHTML;
+
+      configAxios.get(`user/${userToUpdate}`).then((res) => {
+        if (res.data.isAdmin) {
+          this.userAdmin = !this.userAdmin;
+        }
+        console.log(this.userAdmin);
+        store.dispatch("getOneUser", res.data);
+
+        this.updateRevele = !this.updateRevele;
+      });
     },
     trash: function(e) {
       let userToDelete = e.target.parentNode.parentNode.childNodes[1].innerHTML;

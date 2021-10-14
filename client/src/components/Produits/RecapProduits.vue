@@ -97,7 +97,7 @@ export default {
         })
       );
       e.target.parentNode.parentNode.remove();
-      this.$router.push("/AllProducts");
+      this.$router.push("/recapitulatif");
     },
     edit: function(e) {
       let selectedProductId =

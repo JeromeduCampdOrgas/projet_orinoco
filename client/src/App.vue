@@ -20,7 +20,9 @@
         <router-link to="/recapitulatif" @click="recapitulatif"
           >Récapitulatif</router-link
         >
-        <router-link to="/creation">Nouveau produit</router-link>
+        <router-link to="/creation" v-if="this.userLoggedIn.isAdmin"
+          >Nouveau produit</router-link
+        >
       </div>
 
       <div id="desktopMenu">
@@ -34,7 +36,7 @@
         <router-link
           to="/recapitulatif"
           @click="recapitulatif"
-          v-if="this.setUserLogged"
+          v-if="this.userLoggedIn.isAdmin"
           >Récapitulatif</router-link
         >
 
@@ -77,20 +79,20 @@ export default {
     },
 
     recapitulatif: async function() {
-      //console.log(this.categories);
-      for (let i = 0; i < this.categories.length; i++) {
+      console.log(this.$store.state.categories.length);
+      for (let i = 0; i < this.$store.state.categories.length; i++) {
+        console.log(this.$store.state.categories[i]);
         let categorie = new Array();
         let recapproduit = await configAxios.get(
-          `categories/${this.categories[i]}`
+          `categories/${this.$store.state.categories[i]}`
         );
         //console.log(categorie);
-        categorie[i] = this.categories[i]; //(
+        categorie[i] = this.$store.state.categories[i]; //(
         categorie[i] = recapproduit;
-        console.log(recapproduit);
+        console.log(categorie[i]);
         this.produits.push(categorie[i]);
       }
       store.dispatch("getRecapProduits", this.produits);
-      //this.$router.push("/recapitulatif");
     },
     getusers: async function() {
       await configAxios
