@@ -3,7 +3,7 @@
     <div class="overlay" @click="toggleUpdate"></div>
 
     <div class="modale ">
-      <div class="btn-modale btn btn-danger" @click="toggleUpdate">X</div>
+      <div class="btn-modale btn btn-danger" @click="toggleModale">X</div>
       <h2>Modifier utilisateur</h2>
       {{ this.userAdmin }}
       <form id="updateForm" action="">
@@ -22,18 +22,7 @@
 
         <div id="admin">
           <label for="isAdmin">Admin</label>
-          <input
-            type="checkbox"
-            @click="admin"
-            :checked="false"
-            v-if="!this.$store.state.user.isAdmin"
-          />
-          <input
-            type="checkbox"
-            @click="admin"
-            :checked="true"
-            v-if="this.$store.state.user.isAdmin"
-          />
+          <input id="chk" type="checkbox" @click="admin" :checked="userAdmin" />
         </div>
         <div>
           <p class="alert" v-if="alerte">
@@ -41,7 +30,7 @@
           </p>
           <div id="buttons">
             <button class="btn-success" @click="updateUser">Valider</button>
-            <button class="btn-danger" @click="toggleUpdate">
+            <button class="btn-danger" @click="toggleModale">
               Annuler
             </button>
           </div>
@@ -56,7 +45,7 @@ import configAxios from "../../axios/configAxios";
 import store from "../../store/index";
 export default {
   name: "updateModale",
-  props: ["updateRevele", "toggleUpdate", "userAdmin"],
+  props: ["updateRevele", "toggleUpdate", "userAdmin", "toggleModale"],
   data() {
     return {
       dataUser: {
@@ -64,14 +53,16 @@ export default {
         email: "",
         isAdmin: this.userAdmin,
       },
+      stateAdmin: "",
       alerte: false,
       users: this.$store.state.users,
     };
   },
   methods: {
     test(e) {
-      console.log("dataUser: " + this.dataUser.isAdmin);
-
+      //let isAdmin = document.getElementById(this.stateAdmin);
+      console.log(this.stateAdmin);
+      //console.log(isAdmin);
       e.preventDefault();
     },
     erreur: function() {
@@ -79,14 +70,15 @@ export default {
         this.alerte = false;
       }
     },
-    admin: function() {
-      this.dataUser.isAdmin = !this.dataUser.isAdmin;
+    admin: function(e) {
+      this.dataUser.isAdmin = e.target.checked;
     },
     updateUser: async function(e) {
       let pseudo = document.getElementById("nom").lastChild.value;
-      console.log(pseudo);
       let email = document.getElementById("email").lastChild.value;
-      let isAdmin = this.dataUser.isAdmin;
+      let isAdmin = document.getElementById("chk").checked;
+      console.log(isAdmin);
+
       if (!pseudo || !email) {
         this.alerte = !this.alerte;
       } else {
