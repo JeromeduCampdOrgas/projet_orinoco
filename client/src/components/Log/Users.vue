@@ -11,6 +11,7 @@
         v-bind:updateRevele="updateRevele"
         v-bind:toggleUpdate="toggleUpdate"
         v-bind:userAdmin="userAdmin"
+        v-bind:toggleClose="toggleClose"
       ></updateModale>
     </div>
     <table>
@@ -78,16 +79,16 @@ export default {
     },
     toggleUpdate: function(e) {
       let userToUpdate = e.target.parentNode.parentNode.childNodes[1].innerHTML;
-
       configAxios.get(`user/${userToUpdate}`).then((res) => {
         if (res.data.isAdmin) {
           this.userAdmin = !this.userAdmin;
         }
-        console.log(this.userAdmin);
         store.dispatch("getOneUser", res.data);
-
         this.updateRevele = !this.updateRevele;
       });
+    },
+    toggleClose: function() {
+      this.updateRevele = false;
     },
     trash: function(e) {
       let userToDelete = e.target.parentNode.parentNode.childNodes[1].innerHTML;

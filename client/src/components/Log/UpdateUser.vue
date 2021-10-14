@@ -3,7 +3,7 @@
     <div class="overlay" @click="toggleUpdate"></div>
 
     <div class="modale ">
-      <div class="btn-modale btn btn-danger" @click="toggleModale">X</div>
+      <div class="btn-modale btn btn-danger" @click="toggleClose">X</div>
       <h2>Modifier utilisateur</h2>
       {{ this.userAdmin }}
       <form id="updateForm" action="">
@@ -30,7 +30,7 @@
           </p>
           <div id="buttons">
             <button class="btn-success" @click="updateUser">Valider</button>
-            <button class="btn-danger" @click="toggleModale">
+            <button class="btn-danger" @click="toggleClose">
               Annuler
             </button>
           </div>
@@ -45,7 +45,7 @@ import configAxios from "../../axios/configAxios";
 import store from "../../store/index";
 export default {
   name: "updateModale",
-  props: ["updateRevele", "toggleUpdate", "userAdmin", "toggleModale"],
+  props: ["updateRevele", "toggleUpdate", "userAdmin", "toggleClose"],
   data() {
     return {
       dataUser: {
