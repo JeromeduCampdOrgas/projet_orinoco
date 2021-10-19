@@ -5,13 +5,6 @@ const upload = multer();
 const fs = require("fs");
 
 ///Obtenir toutes les catégories
-/*router.get("/categories", productController.getAllCategories);
-//tous les produits d'une catégorie
-router.get("/:categorie", productController.getAllProductsCategorie);
-//supprimer une catégorie
-router.delete("/:categorie", productController.deleteOneProductsCategorie);
-//modifier le nom d'une catégorie
-router.put("/:categorie", productController.updateOneCategorie);*/
 
 ///Obtenir tous les produits/
 router.get("/", productController.getAllProducts);

@@ -1,8 +1,4 @@
-//const _ = require("lodash");
-
-//const productModel = require("../models/product.model");
 const ProductModel = require("../models/product.model");
-//const { uploadErrors } = require("../utils/errors.utils");
 const fs = require("fs"); //natif express ou node
 const { promisify } = require("util"); //natif express ou node
 const pipeline = promisify(require("stream").pipeline);
@@ -13,8 +9,7 @@ const { json } = require("body-parser");
 const uuid = uuidv4();
 
 //Création produit
-module.exports.newProduct = async (req, res) => {
-  //console.log(req);
+module.exports.newProduct = (req, res) => {
   let fileName;
   if (req.file !== null) {
     try {
@@ -30,10 +25,12 @@ module.exports.newProduct = async (req, res) => {
     }
 
     fileName = req.body.name + ".jpg";
-    await pipeline(
+    console.log(fileName);
+    pipeline(
       req.file.stream,
+      //console.log(req.file.stream)
       fs.createWriteStream(
-        `${__dirname}/../client/public/uploads/products/${fileName}`
+        `${__dirname}/../../client/public/uploads/products/${fileName}`
       )
     );
 
@@ -48,7 +45,7 @@ module.exports.newProduct = async (req, res) => {
     });
 
     try {
-      const product = await newProduct.save();
+      const product = newProduct.save();
 
       return res.status(201).json(product);
     } catch (err) {

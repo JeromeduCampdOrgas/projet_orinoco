@@ -1,10 +1,11 @@
 <template>
-  <div class="container">
+  <div>
     <div>
       <h1>Nos {{ this.setSelectedProduct }}</h1>
       <p>nb produits: {{ this.setNbProducts }}</p>
     </div>
-    <div class="productList">
+    <div class="container">
+      <!--class="productList"-->
       <div
         class="product-categorie"
         v-for="item in setProducts"
@@ -13,7 +14,9 @@
       >
         <div>
           <p class="productName">{{ item.name }}</p>
-          <img :src="item.imageUrl" :alt="item.name" />
+          <div class="image">
+            <img :src="item.imageUrl" :alt="item.name" />
+          </div>
           <p>référence: {{ item._id }}</p>
           <p>Prix: {{ item.price / 100 }} €</p>
           <p>Stock: {{ item.stock }}</p>
@@ -111,7 +114,7 @@ export default {
 </script>
 
 <style lang="scss">
-.container {
+/*.container {
   display: flex;
   flex-direction: column;
 }
@@ -132,14 +135,14 @@ export default {
   width: 100%;
   margin: auto;
   margin-top: 50px;
-  border: 1px black solid;
+  //border: 1px black solid;
   & .productName {
     background: #ddd;
     padding: 5px;
   }
   & img {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    //height: 320px;
     margin: auto;
   }
   & label {
@@ -162,5 +165,5 @@ export default {
       width: 25%;
     }
   }
-}
+}*/
 </style>

@@ -17,11 +17,20 @@
         >
         <router-link to="/AllProducts">Tous les produits</router-link>
 
-        <router-link to="/recapitulatif" @click="recapitulatif"
+        <router-link
+          to="/recapitulatif"
+          @click="recapitulatif"
+          v-if="this.userLoggedIn.isAdmin"
           >Récapitulatif</router-link
         >
         <router-link to="/creation" v-if="this.userLoggedIn.isAdmin"
           >Nouveau produit</router-link
+        >
+        <router-link
+          to="/utilisateurs"
+          v-if="this.userLoggedIn.isAdmin"
+          @click="getusers"
+          >Admin utilisateurs</router-link
         >
       </div>
 
@@ -40,7 +49,7 @@
           >Récapitulatif</router-link
         >
 
-        <router-link to="/creation" v-if="this.setUserLogged"
+        <router-link to="/creation" v-if="this.userLoggedIn.isAdmin"
           >Nouveau produit</router-link
         >
         <router-link
@@ -70,6 +79,9 @@ export default {
   },
   components: { Header },
   methods: {
+    allproducts() {
+      location.replace("AllProducts");
+    },
     deconnect: function() {
       localStorage.clear();
       window.location.replace("/");
@@ -140,7 +152,7 @@ export default {
   color: #2c3e50;
   margin: auto;
 }
-
+/********MENU/NAVIGATION ***********/
 li {
   list-style: none;
   text-align: center;
@@ -183,4 +195,5 @@ li {
     display: none;
   }
 }
+/****************** */
 </style>
